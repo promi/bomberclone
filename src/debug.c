@@ -34,13 +34,44 @@ void d_printf (char *fmt,...) {
 };
 
 
+void d_playerstat (char *head) {
+	int i, j;
+	char text[255];
+
+	d_printf ("---------------> %s nb play: %d\n", head, bman.playnum);
+
+	sprintf (text, "id Name             killed Unknown");
+	for (i = 0; i < MAX_PLAYERS; i++)
+		if (players[i].gamestats.isaplayer == 1)
+			sprintf(text, "%s %02d", text, i);
+	sprintf(text, "%s\n", text);
+	d_printf (text);
+
+	for (i = 0; i < MAX_PLAYERS; i++){
+		if (players[i].gamestats.isaplayer == 1 ) {
+			sprintf(text, "%02d %-16s   %2d       %d  ", i, players[i].name, players[i].gamestats.killed, players[i].gamestats.unknown);
+			for (j = 0; j < MAX_PLAYERS; j++)
+				if (players[j].gamestats.isaplayer == 1 )
+					sprintf(text, "%s %2d", text, players[i].gamestats.killedBy[j]);
+			sprintf(text, "%s\n", text);
+			d_printf (text);
+		}
+	}
+};
+
+
+// int killed[MAX_PLAYERS];
+
+
+
 void d_playerdetail (char *head) {
 	int i;
 
 	d_printf ("---------------> %s\n", head);
-	d_printf ("Nr Name              GFX Sta Pkt Win Team net_flag [Addr]\n");
+	d_printf ("Nr Name              GFX Sta Pkt Win kil Team net_flag [Addr]\n");
 	for (i = 0; i < MAX_PLAYERS; i++)
-		d_printf ("%2d %16s %3d %3d %3d %3d %4d   %3d     %p[%s:%s]\n",i, players[i].name, players[i].gfx_nr, players[i].state, players[i].points, players[i].wins, players[i].team_nr, players[i].net.flags, players[i].net.addr.host, &players[i].net.addr, players[i].net.addr.port);
+	//	if (players[i].gfx_nr != -1 )
+			d_printf ("%2d %16s %3d %3d %3d %3d %3d %4d   %3d     %p[%s:%s]\n",i, players[i].name, players[i].gfx_nr, players[i].state, players[i].points, players[i].wins, players[i].nbrKilled, players[i].team_nr, players[i].net.flags, players[i].net.addr.host, &players[i].net.addr, players[i].net.addr.port);
 };
 
 
@@ -109,3 +140,4 @@ void debug_ingameinfo() {
 	sprintf (text, "Pl_nr: %d  TO: %3.2f", bman.players_nr, bman.timeout);	
 	font_gfxdraw (100, gfx.res.y-font[0].size.y, text, 0, 0, (map.size.y*256)+10);
 };
+

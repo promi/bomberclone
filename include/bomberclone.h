@@ -1,4 +1,4 @@
-/* $Id: bomberclone.h,v 1.35 2006/08/19 23:41:47 stpohle Exp $ */
+/* $Id: bomberclone.h,v 1.37 2009-05-11 20:51:25 stpohle Exp $ */
 /* bomberclone.h */
 
 #ifndef _BOMBERCLONE_H_
@@ -72,7 +72,7 @@ struct {
 	signed char lastwinner;		// number of the last winnet
 
     int maxplayer;              // number of max players for the server
-
+	int playnum;				// Number of play
     int sock;                   // the server socket
     int net_ai_family;
     char port[LEN_PORT];        // what port we're using
@@ -152,12 +152,14 @@ extern int config_write();
 extern void ReadPrgArgs (int argc, char **argv);
 extern void ReadPrgArgs_Jump (int argc, char **argv);
 extern int check_version (int ma, int mi, int su, char *ver);
+void joypad_config ();
 
 // debug.c
 extern void d_in_pl_detail (char *head);
 extern void d_playerdetail (char *head);
 extern void d_gamedetail (char *head);
 extern void d_printf (char *fmt,...);
+extern void d_playerstat(char *head);
 extern void d_bitprint (int bits, int nr);
 extern void d_fatal (char *fmt,...);
 extern void debug_ingameinfo();

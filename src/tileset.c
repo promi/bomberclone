@@ -1,4 +1,4 @@
-/* $Id: tileset.c,v 1.16 2004/09/26 02:28:07 stpohle Exp $ */
+/* $Id: tileset.c,v 1.16 2004-09-26 02:28:07 stpohle Exp $ */
 /* load and select tilesets */
 
 #include "bomberclone.h"

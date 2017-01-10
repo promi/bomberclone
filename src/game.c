@@ -1,4 +1,4 @@
-/* $Id: game.c,v 1.118 2007/01/12 22:42:31 stpohle Exp $ 
+/* $Id: game.c,v 1.120 2009-05-11 20:51:25 stpohle Exp $ 
   game.c - procedures for the game. */
 
 #include <string.h>
@@ -64,7 +64,7 @@ game_draw_info ()
                     SDL_BlitSurface (players[i].gfx->small_image, &src, gfx.screen, &dest);
                 }
 
-                sprintf (scrtext, "%10s:%2d", players[i].name, players[i].points);
+                sprintf (scrtext, "%10s:%d %1d %1d", players[i].name, players[i].wins, players[i].points, players[i].nbrKilled);
                 if (!PS_IS_alife (players[i].state)) { // Player is dead
                     if ((players[i].state & PSF_used) != PSF_used)
                         col = 4;
@@ -80,7 +80,7 @@ game_draw_info ()
 
                 font_draw (x, j, scrtext, 0, col);
 
-                x = x + 170;
+                x = x + 180;
                 if (x >= gfx.res.x - (120 + 170)) {
                     x = 0;
                     j = j + 1.5 * font[0].size.x;
@@ -196,14 +196,7 @@ game_keys_loop ()
             bman.updatestatusbar = 1; // force an update
         }
 
-        /*
-           if (keys[SDLK_F9] && event.type == SDL_KEYDOWN) {
-           // Switch Debugmode
-           debug = !debug;
-           bman.updatestatusbar = 1; // force an update
-           }
-         */
-
+		
         if (keyb_gamekeys.state[BCK_esc] && !keyb_gamekeys.old[BCK_esc]) {
             if (chat.active && (bman.state == GS_ready || bman.state == GS_running) && IS_LPLAYER2) {
                 chat.active = 0;
@@ -233,6 +226,11 @@ game_loop ()
 
     if (GT_MP)
         net_game_fillsockaddr ();
+	if ( SDL_InitSubSystem ( SDL_INIT_JOYSTICK ) < 0 )
+        {
+                fprintf ( stderr, "Unable to initialize Joystick: %s\n", SDL_GetError() );
+        }
+	 printf ( "%i joysticks found\n", SDL_NumJoysticks () );
 
     menu = NULL;
     bman.updatestatusbar = 1;   // force an update
@@ -257,6 +255,7 @@ game_loop ()
     }
 
     while (!done && (bman.state == GS_running || bman.state == GS_ready)) {
+	SDL_JoystickUpdate ();
         if ((eventstate = SDL_PollEvent (&event)) != 0)
             switch (event.type) {
             case (SDL_QUIT):
@@ -433,16 +432,23 @@ game_end ()
     /* count the wins for the player, and if only one player 
      * left count the points too */
     cnt_left = 0;
-    for (i = 0; i < MAX_PLAYERS; i++)
+    for (i = 0; i < MAX_PLAYERS; i++){
+        // Update player statistics
+        players[i].gamestats.killed += players[i].nbrKilled;
         if (PS_IS_used (players[i].state)) {
             if (PS_IS_alife (players[i].state)) {
                 bman.lastwinner = i;
                 cnt_left++;
+                if ( GT_MP_PTPM )
                 players[i].wins++;
             }
         }
-    if (cnt_left == 1)
-        players[bman.lastwinner].points += bman.players_nr_s;
+    }
+	
+    if (cnt_left == 1 && GT_MP_PTPM ){
+        players[bman.lastwinner].points += 1; // Bonus for victory
+        players[bman.lastwinner].points += players[bman.lastwinner].nbrKilled;
+    }
     else
         bman.lastwinner = -1;
 
@@ -499,7 +505,7 @@ game_start ()
     menu_displaytext ("Loading..", "Please Wait");
 
     bman.players_nr_s = 0;
-
+    bman.playnum += 1;
     for (p = 0; p < MAX_PLAYERS; p++) {
         if (PS_IS_used (players[p].state)) {
             bman.players_nr_s++;
@@ -532,6 +538,8 @@ game_start ()
         players[p].pos.y = 0.0;
         players[p].tunnelto = 0.0f;
         players[p].ready = 0;
+        // add reset nbrKilled value
+        players[p].nbrKilled = 0;
 
         /* all types of illnes turn them off */
         for (i = 0; i < PI_max; i++)
@@ -546,6 +554,7 @@ game_start ()
             players[p].bombs[i].dest.y = 0;
             players[p].bombs[i].mode = BM_normal;
             players[p].bombs[i].id.p = p;
+            players[p].bombs[i].id.pIgnition = p;
             players[p].bombs[i].id.b = i;
             players[p].pos.x = 0;
             players[p].pos.x = 0;
@@ -760,12 +769,15 @@ game_showresultnormal (int pos_x, int pos_y, int pos_w, int pos_h)
     /* Sort the playerlist */
     for (p = 0, pl_cnt = 0; p < MAX_PLAYERS; p++)
         if (PS_IS_used (players[p].state)) {
+            // Set isplayer statistics for futur display
+            players[p].gamestats.isaplayer = 1;
+            // Sort player
             pl[pl_cnt] = &players[p];
             i = pl_cnt;
 
-            while (i > 0 && (pl[i - 1]->wins < players[p].wins
-                             || (pl[i - 1]->wins == players[p].wins
-                                 && pl[i - 1]->points < players[p].points))) {
+            while (i > 0 && (pl[i - 1]->points < players[p].points
+                             || (pl[i - 1]->points == players[p].points
+                                 && pl[i - 1]->wins < players[p].wins))) {
                 pl[i] = pl[i - 1];
                 i--;
                 pl[i] = &players[p];
@@ -807,7 +819,7 @@ game_showresultnormal (int pos_x, int pos_y, int pos_w, int pos_h)
                 font_gfxdraw (10 + pos_x + x + GFX_MENUPLAYERIMGSIZE_X, pos_y + y - 10, pl[p]->name,
                               0, COLOR_gray, 1);
 
-            sprintf (text, "%3d (%3d)", pl[p]->wins, pl[p]->points);
+            sprintf (text, "%3d (%2d)", pl[p]->points, pl[p]->wins);
             font_gfxdraw (10 + pos_x + x + GFX_MENUPLAYERIMGSIZE_X, pos_y + y + 6, text, 0, 0, 1);
 
             if (pl[p]->gfx != NULL) {

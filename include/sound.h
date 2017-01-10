@@ -1,4 +1,4 @@
-/* $Id: sound.h,v 1.4 2003/12/24 02:38:15 stpohle Exp $ */
+/* $Id: sound.h,v 1.4 2003-12-24 02:38:15 stpohle Exp $ */
 /* include file for the sound */
 
 #ifndef _SOUND_H_

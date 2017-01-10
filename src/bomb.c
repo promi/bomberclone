@@ -1,4 +1,4 @@
-/* $Id: bomb.c,v 1.70 2007/02/22 21:40:39 stpohle Exp $ */
+/* $Id: bomb.c,v 1.71 2009-05-11 20:51:25 stpohle Exp $ */
 /* everything what have to do with the bombs */
 
 #include "bomberclone.h"
@@ -63,7 +63,7 @@ void draw_bomb (_bomb * bomb) {
 void bomb_explode (_bomb *bomb, int net) {
     int d;
 
-    d_printf ("Bomb Explode p:%d, b:%d [%f,%f]\n", bomb->id.p, bomb->id.b, bomb->pos.x, bomb->pos.y);
+    d_printf ("Bomb Explode p:%d, b:%d, pI:%d, exe_nr:%d [%f,%f]\n", bomb->id.p, bomb->id.b, bomb->id.pIgnition, bomb->ex_nr, bomb->pos.x, bomb->pos.y);
 
     if (bomb->ex_nr == -1)
         bomb->ex_nr = bman.last_ex_nr++; // set bomb explosion id
@@ -463,6 +463,9 @@ int explosion_check_field (int x, int y, _bomb *bomb)
         if (tmpbomb != bomb && tmpbomb->state != BS_exploding 
 			&& tmpbomb->mode != BM_kicked) {
               tmpbomb->ex_nr = bomb->ex_nr; // set the ex_nr to identify explosions
+              // Add propagation of owner first explosion propagation
+              tmpbomb->id.pIgnition = bomb->id.pIgnition;
+              // d_printf ("explosion_check_field: launch bomb_explode == ex_nr:%d pl:%d pli:%d\n", tmpbomb->ex_nr, tmpbomb->id.p, tmpbomb->id.pIgnition);	
               bomb_explode (tmpbomb, 1);
         }
     }
@@ -473,8 +476,14 @@ int explosion_check_field (int x, int y, _bomb *bomb)
         if (((tmpplayer->state & PSF_alife) != 0)
             && (GT_SP
 				|| (GT_MP && (&players[bman.p_nr] == tmpplayer || (IS_LPLAYER2 && &players[bman.p2_nr] == tmpplayer)))
-                || (GT_MP_PTPM && PS_IS_aiplayer (tmpplayer->state))))
+                || (GT_MP_PTPM && PS_IS_aiplayer (tmpplayer->state)))){
+
+                    // Check if the bomb owner is the player killed in this case the killer is owner of bomb ignition
+                    if (tmpplayer == &players[bomb->id.p]) // suicide case
+                        player_died (tmpplayer, bomb->id.pIgnition, 0);
+                    else 
             player_died (tmpplayer, bomb->id.p, 0);
+    }
     }
 
     // let the stones right beside explode

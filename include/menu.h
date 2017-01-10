@@ -1,4 +1,4 @@
-/* $Id: menu.h,v 1.13 2004/09/25 10:57:50 stpohle Exp $
+/* $Id: menu.h,v 1.13 2004-09-25 10:57:50 stpohle Exp $
  * GUI for menuhandling
  */
 

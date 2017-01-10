@@ -121,11 +121,17 @@ multiplayer_firstrun ()
         players[i].gfx = NULL;
         players[i].net.timestamp = timestamp;
         players[i].points = 0;
+        players[i].nbrKilled = 0;
         players[i].wins = 0;
         players[i].net.pingreq = 20;
         players[i].net.pingack = 22;
         players[i].state = 0;
 		players[i].team_nr = -1;
+        players[i].gamestats.killed = 0;
+        players[i].gamestats.unknown = 0;
+        players[i].gamestats.isaplayer = 0;
+        for (j = 0; j < MAX_PLAYERS; j++)
+            players[i].gamestats.killedBy[j] = 0;
     }
 
 	for (i = 0; i < MAX_TEAMS; i++) {
@@ -172,6 +178,7 @@ void host_multiplayer_game () {
 
 /* the loop for the multiplayer games */
 void multiplayer_game () {
+	int olddebug = debug;
 	
     while (bman.state != GS_startup && bman.state != GS_quit && bman.sock != -1) {
         /* check players and in_pl lists */
@@ -206,7 +213,13 @@ void multiplayer_game () {
 			else 
 				game_end ();
         }
+
     }
+    // Only for update statistics
+    debug = 1;
+    d_playerstat("Stats at the end of game");
+    debug = olddebug;
+
 };
 
 

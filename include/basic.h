@@ -1,4 +1,4 @@
-/* $Id: basic.h,v 1.36 2006/08/15 14:12:19 patty21 Exp $ */
+/* $Id: basic.h,v 1.39 2010-12-11 20:55:37 steffen Exp $ */
 /* basic types which we need everywhere */
 
 #ifndef _BC_BASIC_H_
@@ -74,7 +74,7 @@
 
 #define DEFAULT_UDPPORT 11000
 #define DEFAULT_GAMECACHEPORT "11111"
-#define DEFAULT_GAMECACHE "ogc.yz.to:11111"
+#define DEFAULT_GAMECACHE "ogc.gulpe.de:11111"
 #define GAMESRV_TIMEOUT 2000    /* Timeout of the GameSrv_GetEntry */
 
 #define UDP_TIMEOUT 15000

@@ -1,4 +1,4 @@
-/* $Id: single.h,v 1.6 2004/11/07 04:13:09 stpohle Exp $
+/* $Id: single.h,v 1.6 2004-11-07 04:13:09 stpohle Exp $
  * single player */
  
 // single.c

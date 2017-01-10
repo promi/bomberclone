@@ -1,4 +1,4 @@
-/* $Id: help.c,v 1.14 2004/12/26 04:19:20 stpohle Exp $ 
+/* $Id: help.c,v 1.14 2004-12-26 04:19:20 stpohle Exp $ 
  * Display complex help text and information screen about the game
  */
 

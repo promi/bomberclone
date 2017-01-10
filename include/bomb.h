@@ -1,4 +1,4 @@
-/* $Id: bomb.h,v 1.7 2007/01/12 11:15:44 stpohle Exp $
+/* $Id: bomb.h,v 1.8 2009-05-11 20:51:25 stpohle Exp $
  * bomb include file
  */
 
@@ -29,6 +29,7 @@ struct {
         struct __bomb_id {      // save the bomb id
                 signed char p;  // playernumber of this bomb
                 signed char b;  // bombnumber of this bomb
+				signed char pIgnition; // playernumber of ignition explode
         } id;
         float firer[4];         // range of the fire for the fire for each direction
         int firemaxr[4];        // max range reached?

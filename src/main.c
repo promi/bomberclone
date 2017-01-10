@@ -1,4 +1,4 @@
-/* $Id: main.c,v 1.36 2007/02/17 08:27:41 stpohle Exp $ */
+/* $Id: main.c,v 1.37 2008-07-27 11:24:37 stpohle Exp $ */
 
 #include "basic.h"
 #include "bomberclone.h"
@@ -6,6 +6,7 @@
 #include "gfx.h"
 #include "menu.h"
 #include "player.h"
+#include "keyb.h"
 #include "single.h"
 
 _bomberclone bman;              // Holds GameData
@@ -40,10 +41,12 @@ main (int argc, char **argv)
         return (1);
     }
 
+    SDL_InitSubSystem ( SDL_INIT_JOYSTICK );
 	SDL_EnableUNICODE(1);
 	
 	config_init (argc, argv);
-	
+	keyb_init ();
+
 	while (menuselect != -1 && bman.state != GS_quit) {
 
 		menu = menu_new ("Bomberclone", 400, 250);

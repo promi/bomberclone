@@ -1,4 +1,4 @@
-/* $Id: menugui.h,v 1.2 2004/02/07 13:35:28 stpohle Exp $
+/* $Id: menugui.h,v 1.2 2004-02-07 13:35:28 stpohle Exp $
  * Menuhandling: gui elements */
 
 #ifndef _MENUGUI_H_

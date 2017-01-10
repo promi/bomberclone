@@ -1,4 +1,4 @@
-/* $Id: gfx.h,v 1.10 2005/04/09 18:22:40 stpohle Exp $ */
+/* $Id: gfx.h,v 1.10 2005-04-09 18:22:40 stpohle Exp $ */
 #ifndef _GFX_H_
 
 #define _GFX_H_

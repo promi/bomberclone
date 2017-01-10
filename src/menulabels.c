@@ -1,4 +1,4 @@
-/* $Id: menulabels.c,v 1.8 2006/02/06 21:18:01 stpohle Exp $
+/* $Id: menulabels.c,v 1.8 2006-02-06 21:18:01 stpohle Exp $
  * Menuhandling: labels */
 
 #include "basic.h"

@@ -1,4 +1,4 @@
-/* $Id: keyb.c,v 1.6 2005/08/07 17:46:21 stpohle Exp $
+/* $Id: keyb.c,v 1.7 2008-07-27 11:24:37 stpohle Exp $
  * keyb.c
  */
 
@@ -7,8 +7,11 @@
 #include "ogcache-client.h"
 #include "menu.h"
 #include "keyb.h"
+#include "SDL.h"
 
 BCGameKeys keyb_gamekeys;
+BCGameJoystick joy_keys[2];
+SDL_Joystick *joy[2];
 
 /*
  * Translation table for the keycodes 
@@ -76,6 +79,11 @@ void keyb_config_reset () {
 	keyb_gamekeys.keycode[BCK_pause] = SDLK_F4;
 	keyb_gamekeys.keycode[BCK_fullscreen] = SDLK_F8;
 	keyb_gamekeys.keycode[BCK_esc] = SDLK_ESCAPE;
+	
+	joy_keys[0].drop = 0;
+	joy_keys[0].special = 1;
+	joy_keys[1].drop = 0;
+	joy_keys[1].special = 1;
 };
 
 
@@ -119,9 +127,9 @@ void keyb_config_createkeymenu (_menu *menu, int key, int x, int y, int menu_nr)
 	int key_id;
 	char keyname [32];
 	char keytext [50];
-	
+
 	for (key_id = key; key_id >= BCPK_max && key_id < BCPK_max * 3; key_id = key_id - BCPK_max);
-	
+
 	switch (key_id) {
 		case (BCPK_up):
 			strcpy (keyname, "Up");
@@ -165,6 +173,70 @@ void keyb_config_createkeymenu (_menu *menu, int key, int x, int y, int menu_nr)
 	keyb_code2text (keyb_gamekeys.keycode[key], keytext);
 	menu_create_button (menu, keytext, x + 70, y, 100, menu_nr + key);
 }
+
+/*
+ * select a new key for the function, 
+ */
+void keyb_config_joypad (int key) {
+	unsigned int n = 0;
+	SDL_Event event;
+	Uint8 *keys;
+	int keypressed = 0,	done = 0, eventstate = 0, reorder = 0, i, j;
+
+	if (joy[0] == NULL || key < 0 || key >= BCK_max) return;
+	
+	SDL_JoystickUpdate ();
+	
+	menu_displaytext ("Joypad Config", "Please press the new key\nfor this function.");
+	
+	keys = SDL_GetKeyState (NULL);
+	if (keys[SDLK_RETURN] || keys[SDLK_ESCAPE])
+		keypressed = 1;
+	
+	timestamp = SDL_GetTicks (); // needed for time sync.
+	
+	while (!reorder && !done && bman.state != GS_quit) {
+		/* do the network loop if we have to */
+		if (bman.sock > 0) {
+			network_loop ();
+			if (bman.notifygamemaster)
+				reorder = ogc_loop ();
+			else
+				reorder = 0;
+		}
+		
+		// eventstate = s_fetchevent (&event);
+		SDL_JoystickEventState ( SDL_QUERY ); // js
+		SDL_JoystickUpdate ();
+		
+		for ( j = 0; j < 2; j++)
+			for ( i=0; i < SDL_JoystickNumButtons ( joy[j] ); ++i ) {
+				n = SDL_JoystickGetButton ( joy[j], i );
+				// 2 .. bomb
+				/* Sadly every other controller enumberates different */
+				if (n != 0) {
+					printf("keyb keyb_config_joypad: JS %d: %d \n", j, i);
+					if (key == BCPK_drop || key == BCPK_drop + BCPK_max + BCPK_max)
+						joy_keys[j].drop = i;
+					if (key == BCPK_special || key == BCPK_special + BCPK_max + BCPK_max)
+						joy_keys[j].special = i;
+					eventstate = 1;
+					done = 1;
+				}
+			}
+		
+		if (eventstate >= 1) {
+			switch (event.type) {
+				case (SDL_QUIT):
+					bman.state = GS_quit;
+					done = 1;
+					break;
+			}
+		}
+		
+		s_calctimesync ();
+	}
+};
 
 
 /*
@@ -224,6 +296,54 @@ void keyb_config_readkey (int key) {
 		keyb_gamekeys.keycode[key] = newkey;
 };
 
+/*
+ * joypad configuration screen
+ */
+void joypad_config () {
+	int menuselect = 1;
+	_menu *menu;
+	
+	do {
+		menu = menu_new ("Joypad Config", 420, 400);
+		
+		if ( joy[0] != NULL ) {   
+			char text[32];
+			
+			menu_create_label (menu, "Player 1 Joypad", 20, 105, 1, COLOR_yellow);
+			// keyb_config_createkeymenu (menu, BCPK_max + BCPK_drop, 25, 250, 10);
+			menu_create_label (menu, "Drop", 25, 250 + 2, 0, COLOR_brown);
+			sprintf (text, "%d", joy_keys[0].drop);
+			menu_create_button (menu, text, 25 + 70, 250, 100, 10 + BCPK_drop);
+			// keyb_config_createkeymenu (menu, BCPK_max + BCPK_special, 25, 280, 10);
+			menu_create_label (menu, "Special", 25, 280 + 2, 0, COLOR_brown);
+			sprintf (text, "%d", joy_keys[0].special);
+			menu_create_button (menu, text, 25 + 70, 280, 100, 10 + BCPK_special);
+		}
+		
+		if ( joy[1] != NULL ) {
+			char text[32];
+			
+			menu_create_label (menu, "Player 2 Joypad", 210, 105, 1, COLOR_yellow);
+			// keyb_config_createkeymenu (menu, BCPK_max + BCPK_max + BCPK_drop, 225, 250, 10);
+			menu_create_label (menu, "Drop", 225, 250 + 2, 0, COLOR_brown);
+			sprintf (text, "%d", joy_keys[1].drop);
+			menu_create_button (menu, text, 225 + 70, 250, 100, 10 + BCPK_max + BCPK_max + BCPK_drop);
+			// keyb_config_createkeymenu (menu, BCPK_max + BCPK_max + BCPK_special, 225, 280, 10); 
+			menu_create_label (menu, "Special", 225, 280 + 2, 0, COLOR_brown);
+			sprintf (text, "%d", joy_keys[1].special);
+			menu_create_button (menu, text, 225 + 70, 280, 100, 10 + BCPK_max + BCPK_max + BCPK_special);
+		}
+		
+		menu_create_button (menu, "OK", 250, 330, 150, 1);
+		menu_focus_id (menu, menuselect);
+		menuselect = menu_loop (menu);
+		menu_delete (menu);
+		if (menuselect >= 10 && menuselect < 10+BCK_max)
+			keyb_config_joypad (menuselect - 10);
+	} while (menuselect != 1 && menuselect != -1);
+};
+
+
 
 /*
  * keyboard configuration screen
@@ -282,6 +402,11 @@ void keyb_config () {
  */
 void keyb_init () {	
 	memset (keyb_gamekeys.state, 0, sizeof (Uint8) * BCK_max);
+	joy[0] = joy[1] = NULL;
+
+	joy[0] = SDL_JoystickOpen (0);
+	if (joy[0])
+		joy[1] = SDL_JoystickOpen (1);
 };
 
 
@@ -289,14 +414,54 @@ void keyb_init () {
  * read all keys and set the keyb_gamekeys
  */
 void keyb_loop (SDL_Event *event) {
-	int i;
-	
+	int j, i, offset = 0;
+
 	Uint8 *keys = SDL_GetKeyState (NULL);
-	
+
+	if (joy[0]) {
+		SDL_JoystickEventState ( SDL_QUERY ); // js
+		SDL_JoystickUpdate ();
+	}
+
 	/* copy the state into the old state */
 	memcpy (keyb_gamekeys.old, keyb_gamekeys.state, sizeof (Uint8) * BCK_max);
 	memset (keyb_gamekeys.state, 0, sizeof (Uint8) * BCK_max);
+	
+	for (j = 0; j < 2; j++) {
+		if (joy[j]) {
+			for ( i=0; i < SDL_JoystickNumButtons (joy[j]); ++i ) {
+				unsigned int n = SDL_JoystickGetButton (joy[j], i);
+				/* Sadly every other controller enumberates different */
+				if (n != 0 && i == joy_keys[j].drop)
+					keyb_gamekeys.state[offset + BCPK_drop] |= 1;
+				if (n != 0 && i == joy_keys[j].special)
+					keyb_gamekeys.state[offset + BCPK_special] |= 1;
+			}
 
+			for (  i=0; i < SDL_JoystickNumAxes ( joy[j] ); ++i )  {
+				signed short a = SDL_JoystickGetAxis ( joy[j], i );
+				/*
+				 X -> Axis 0
+				 Y -> Axis 1
+				 There are only the values -32786 .. 32768 available
+				 */
+				if ( i == 0 && a < (-16000) ) {
+					keyb_gamekeys.state[offset + BCPK_left] |= 1;
+				}
+				if (i == 0 && a > 16000 ) {
+					keyb_gamekeys.state[offset + BCPK_right] |= 1;
+				}
+				if ( i == 1 && a < -16000 ) {
+					keyb_gamekeys.state[offset + BCPK_up] |= 1;
+				}
+				if (i == 1 && a > 16000 ) {
+					keyb_gamekeys.state[offset + BCPK_down] |= 1;
+				}
+			}
+		}
+		offset = BCPK_max + BCPK_max;
+	}
+	
 	/* read the new state of the pressed keys */
 	for (i = 0; i < BCK_max; i++) {
 		if (keyb_gamekeys.keycode[i] >= 'A' && keyb_gamekeys.keycode[i] <= 'Z') {

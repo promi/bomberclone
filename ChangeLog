@@ -1,4 +1,53 @@
-$Id: ChangeLog,v 1.124 2007/12/15 12:54:48 stpohle Exp $
+$Id: ChangeLog,v 1.133 2010-12-11 21:27:55 steffen Exp $
+
+Version 0.11.9
+==============
+
+- changed: opengamecache had to move to my own server. New address: ogc.gulpe.de:11111
+
+- fixed: on certain networks, recvfrom hasen't returned. Even select
+         returns with data aviable recvfrom got stuck because of no data.
+         Added MSG_DONTWAIT here as flag. (only on linux)
+
+- fixed: counter pkg_lastid became > 32767 almost messages are lost 
+         in cache managment 
+         patch from: Michel Bernay
+
+- fixed: bug with selecting a player gfx.
+
+- got a big patch file from Michel Bernay which fixes:
+  fixed: bug about compute points of the winner in multiplayer mode
+  fixed: bug for server for coputing point (Suppress all process in
+         reception of playerdata)
+  fixed: bug in cache managment (lot of messages lost by function 
+         rscachedel)
+  added: function to find who player is owner of explosion to compute
+         the killer
+  added: function in debug for display player statistics
+  changed: display points on general menu
+  changed: scorring now a unique players wins a round add 1 point 
+           (bonus for victory) and numer of player killed by thge
+           winner
+
+- Added Warning if a game get startet with only one player selected
+  Patch send in by: Carles Pina i Estany
+
+- Added Joystick support - Patch send in by: Patrick Kirsch
+  Chenges i made to the patch: I open only once the joystick device.
+  Since after the patch the joystick got opened a few times without
+  closing it again. The setupmenu will display now the number of the
+  button which is selected for the function.
+
+- Fixed BUG found by Lars Poeschel
+  One player could join without problems and if a second player joined
+  this network game, the server crashed in do_contest() accessing
+  illegal memory. The problem is that a contest packet is received with
+  to -1 and from 1. Then in the line
+	players[ct_pkg->to].net.flags &= (0xFF - NETF_firewall);
+  obviously illegal memory is accessed.
+  Fixed the check of the to parameter from the contest packet. The 
+  server ignores now a to value of -1.
+
 
 Version 0.11.8
 ================

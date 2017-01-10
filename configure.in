@@ -5,7 +5,7 @@ dnl 	Please disable it in the Anjuta project configuration
 
 AC_INIT(configure.in)
 AC_CANONICAL_TARGET
-AM_INIT_AUTOMAKE(bomberclone, 0.11.8)
+AM_INIT_AUTOMAKE(bomberclone, 0.11.9)
 AM_CONFIG_HEADER(config.h)
 
 AC_EXEEXT
@@ -33,8 +33,8 @@ dnl Check for SDL
     )
     
     CFLAGS="$SDL_CFLAGS $CFLAGS"
+	SDL_LIBS="$SDL_LIBS -lpng -ljpeg"
     LIBS="$SDL_LIBS $LIBS"
-
 
 dnl Checks for header files.
 

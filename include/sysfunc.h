@@ -1,4 +1,4 @@
-/* $Id: sysfunc.h,v 1.9 2007/12/09 22:13:03 stpohle Exp $ */
+/* $Id: sysfunc.h,v 1.9 2007-12-09 22:13:03 stpohle Exp $ */
 /* include some system near functions */
 
 #ifndef _SYSFUNC_H_

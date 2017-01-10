@@ -1,4 +1,4 @@
-/* $Id: mapmenu.c,v 1.27 2006/07/30 11:44:58 stpohle Exp $ */
+/* $Id: mapmenu.c,v 1.27 2006-07-30 11:44:58 stpohle Exp $ */
 /* map/tileset selection menu */
 
 #include "bomberclone.h"

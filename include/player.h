@@ -1,4 +1,4 @@
-/* $Id: player.h,v 1.11 2007/01/12 22:42:31 stpohle Exp $
+/* $Id: player.h,v 1.12 2009-05-11 20:51:25 stpohle Exp $
  * playerinclude file
  */
 
@@ -8,16 +8,16 @@
 #include "bomb.h"
 
 enum _specials {
-	SP_nothing=0,				// player has no special
-	SP_trigger,					// triggered bomb
-	SP_row,						// bomb row
-	SP_push,					// push bombs
-	SP_moved,					// moved bombs
-	SP_liquid,					// liquid bombs
-	SP_kick,					// kick bombs
+	SP_nothing=0,				// 0 player has no special
+	SP_trigger,					// 1 triggered bomb
+	SP_row,						// 2 bomb row
+	SP_push,					// 3 push bombs
+	SP_moved,					// 4 moved bombs
+	SP_liquid,					// 5 liquid bombs
+	SP_kick,					// 6 kick bombs
 	
-	SP_max,						// just to know how many types there are
-	SP_clear					// needed to let the server know we removed the special
+	SP_max,						// 7 just to know how many types there are
+	SP_clear					// 8 needed to let the server know we removed the special
 };
 
 
@@ -43,6 +43,7 @@ enum _playerstateflags {		//     not Set    |   Set
 	PSF_respawn = 32			//                | Player is Respawning
 };
 
+
 #define PSFM_used (PSF_used + PSF_playing)
 #define PSFM_alife (PSF_used + PSF_alife + PSF_playing)
 #define PS_IS_dead(__ps) (((__ps) & (PSFM_alife + PSF_respawn)) == (PSFM_used))
@@ -53,6 +54,12 @@ enum _playerstateflags {		//     not Set    |   Set
 #define PS_IS_used(__ps) (((__ps) & (PSFM_used)) != 0)
 #define PS_IS_aiplayer(__ps) ((((__ps) & (PSFM_used)) != 0) && (((__ps) & (PSF_ai)) == PSF_ai))
 
+struct {
+	int killedBy[MAX_PLAYERS];
+	int killed;
+	int unknown;
+	int isaplayer;
+} typedef _gamestats;
 
 struct {
 	float to;  // if (to > 0) the ilness is still working
@@ -106,10 +113,12 @@ struct {
     signed char in_nr;          // number of the connected player entry
 
     int points;                 // points
+	int nbrKilled;				// number of player killed during a round
 	int wins;					// wins
     signed char dead_by;        // player who killed this player
 
 	_net_player net;			// holds all important network data
+	_gamestats gamestats;
 } typedef _player;
 
 

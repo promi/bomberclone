@@ -35,7 +35,13 @@ struct {
 	int keycode [BCK_max];	// keycode
 } typedef BCGameKeys;
 
+struct {
+	int drop;
+	int special;
+} typedef BCGameJoystick;
+
 extern BCGameKeys keyb_gamekeys;
+extern BCGameJoystick joy_keys[2];
 
 extern void keyb_config ();
 extern void keyb_config_reset ();

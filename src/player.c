@@ -1,4 +1,4 @@
-/* $Id: player.c,v 1.106 2007/12/09 22:37:38 stpohle Exp $
+/* $Id: player.c,v 1.108 2009-10-11 17:14:47 stpohle Exp $
  * player.c - everything what have to do with the player */
 
 #include <SDL.h>
@@ -292,6 +292,7 @@ stepmove_player (int pl_nr)
     _point bomb1[MAX_PLAYERS * MAX_BOMBS],
       bomb2[MAX_PLAYERS * MAX_BOMBS];
     _player *p = &players[pl_nr];
+    
     int i,
       j,
       f;
@@ -421,6 +422,24 @@ player_checkpos (int x, int y)
 };
 
 
+
+/* Search if an killer exist for explosion at position */	
+/* Must be used after check_exfield function */
+int 
+get_killer_for_explosion (short int x, short int y) 
+{
+    int killer = -1, i;
+	
+    //for (i = 0; (i < 4 && killer == -1); i++)
+    for (i = 0; i < 4; i++)
+        if (map.field[x][y].ex[i].count > 0) {
+            if (players[map.field[x][y].ex[i].bomb_p].bombs[map.field[x][y].ex[i].bomb_b].ex_nr == map.field[x][y].ex_nr )
+                killer = map.field[x][y].ex[i].bomb_p;
+            d_printf("get_killer_for_explosion: found killer pl_nr:%d killer:%d for index %d\n", map.field[x][y].ex[i].bomb_p, killer, i);
+        }
+    return killer;
+}
+
 /* move the player if he have to move AND check if we are on a block
    or over fire */
 void
@@ -460,15 +479,15 @@ player_move (int pl_nr)
         /* check the players position */
         if (PS_IS_alife (p->state) && (CUTINT(p->pos.x) > EXPLOSION_SAVE_DISTANCE && (p->d == left || p->d == right))
             && (!check_exfield (p->pos.x + 1.0f, p->pos.y)))
-                player_died (p, -1, 0);
-        if (PS_IS_alife (p->state) && (CUTINT(p->pos.y) > EXPLOSION_SAVE_DISTANCE && (p->d == up || p->d == down))
+                player_died (p, get_killer_for_explosion(p->pos.x + 1.0f, p->pos.y), 0);
+        else if (PS_IS_alife (p->state) && (CUTINT(p->pos.y) > EXPLOSION_SAVE_DISTANCE && (p->d == up || p->d == down))
             && (!check_exfield (p->pos.x, p->pos.y + 1.0f)))
-                player_died (p, -1, 0);
-        if (PS_IS_alife (p->state) && ((CUTINT(p->pos.x) < (1.0f - EXPLOSION_SAVE_DISTANCE) && (p->d == left || p->d == right))
+                player_died (p, get_killer_for_explosion(p->pos.x, p->pos.y + 1.0f), 0);
+        else if (PS_IS_alife (p->state) && ((CUTINT(p->pos.x) < (1.0f - EXPLOSION_SAVE_DISTANCE) && (p->d == left || p->d == right))
             || (CUTINT(p->pos.y) < (1.0f - EXPLOSION_SAVE_DISTANCE)
                 && (p->d == up || p->d == down)))
 			&& (!check_exfield (p->pos.x, p->pos.y)))
-                player_died (p, -1, 0);
+                player_died (p, get_killer_for_explosion(p->pos.x, p->pos.y), 0);
     }
 };
 
@@ -550,19 +569,34 @@ player_died (_player * player, signed char dead_by, int network)
 		return;
 	
     // player die !
-    d_printf ("player_died (pl_nr:%d : %10s) current state: %d\n", player - players, player->name, player->state);
+    d_printf ("player_died net:%d pl_nr:%d dead_by_nr:%d - %-10s\n", network, player - players, dead_by, players[dead_by].name);
 
     bman.updatestatusbar = 1;   // force an update
-    if (PS_IS_alife (player->state) && dead_by >= 0 && dead_by < MAX_PLAYERS)
+    if (PS_IS_alife (player->state) && dead_by >= 0 && dead_by < MAX_PLAYERS){
+		// Update player's statistics
+		players[player - players].gamestats.killedBy[dead_by]++;
+		// Update player's data
         if (player - players != dead_by) {
             players[dead_by].points++;
+            players[dead_by].nbrKilled++;
 			if (bman.gametype == GT_team && players[dead_by].team_nr >= 0 && players[dead_by].team_nr < MAX_TEAMS)
 				teams[players[dead_by].team_nr].points++;
+            // refresh data for killer when the dead is local
+            if (GT_MP && !network)
+                net_game_send_player (dead_by);
+        }
 		}
+    else if ( dead_by == -1 ){
+        players[player - players].gamestats.unknown++;
+        d_printf("ERRROR get killer it is impossible check get_the_killer_for_explosion and player_move funtion traces\n");
+    }
+
     player->frame = 0;
     player->state &= (0xFF - PSF_alife);
     player->dead_by = dead_by;
 	special_clear (player - players);
+
+    // Send player died when is local
     if (GT_MP && !network)
         net_game_send_player (player - players);
 	
@@ -840,7 +874,7 @@ player_set_gfx (_player * p, signed char gfx_nr)
 	d_printf ("player_set_gfx: name:%15s from gfx %d to gfx %d.\n", p->name, p->gfx_nr, gfx_nr);
 	
     p->gfx_nr = gfx_nr;
-    if (p->gfx_nr < 0 || p->gfx_nr >= MAX_PLAYERS)
+    if (p->gfx_nr < 0 || p->gfx_nr >= gfx.player_gfx_count)
         p->gfx_nr = -1;
     if (p->gfx_nr == -1) {
         p->gfx = NULL;

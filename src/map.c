@@ -1,4 +1,4 @@
-/* $Id: map.c,v 1.27 2006/07/30 11:44:57 stpohle Exp $ */
+/* $Id: map.c,v 1.28 2009-05-11 20:51:25 stpohle Exp $ */
 /* map handling, like generate and load maps. */
 
 #include "bomberclone.h"
@@ -112,11 +112,8 @@ map_new (char *filename)
      */
      
     pl_cnt = 0;
-    
     for (pl = 0; pl < MAX_PLAYERS; pl++) {
-        
         if (PS_IS_used (players[pl].state)) {
-            
             pl_cnt++;
         }
     }

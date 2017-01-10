@@ -1,4 +1,4 @@
-/* $Id: playerinput.c,v 1.3 2004/09/13 22:15:57 stpohle Exp $
+/* $Id: playerinput.c,v 1.3 2004-09-13 22:15:57 stpohle Exp $
  * playerinput 
  * 
  * the playerinput system will only set some values and flags of the player

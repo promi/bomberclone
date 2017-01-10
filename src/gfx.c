@@ -1,4 +1,4 @@
-/* $Id: gfx.c,v 1.41 2005/07/06 13:11:55 stpohle Exp $ */
+/* $Id: gfx.c,v 1.42 2009-10-10 09:43:55 stpohle Exp $ */
 /* gfx.c */
 
 #include "bomberclone.h"
@@ -69,7 +69,7 @@ gfx_load_players (int sx, int sy)
             tmpimage1 = scale_image (tmpimage, gfx.players[i].ani.w * 4, gfx.players[i].ani.frames * gfx.players[i].ani.h);
             getRGBpixel (tmpimage1, 0, 0, &r, &g, &b);
             SDL_SetColorKey (tmpimage1, SDL_SRCCOLORKEY, SDL_MapRGB (tmpimage1->format, r, g, b));
-	    gfx.players[i].ani.image = SDL_DisplayFormat (tmpimage1);
+		    gfx.players[i].ani.image = SDL_DisplayFormat (tmpimage1);
             SDL_FreeSurface (tmpimage1);
 	    
 	    /* calculate the numbers of images for the animation */
@@ -100,8 +100,8 @@ gfx_load_players (int sx, int sy)
     sprintf (filename, "%s/player/playersick.png", bman.datapath);
     tmpimage = IMG_Load (filename);
     if (tmpimage == NULL) {
-	printf ("Can't load image: %s\n", SDL_GetError ());
-	exit (1);
+		printf ("Can't load image: %s\n", SDL_GetError ());
+		exit (1);
     }
     gfx.ill.frames = tmpimage->h / (2 * GFX_IMGSIZE);
     tmpimage1 = scale_image (tmpimage, (2 * sx * tmpimage->w) / (2 * GFX_IMGSIZE), gfx.ill.frames * (2 * sy));
@@ -115,8 +115,8 @@ gfx_load_players (int sx, int sy)
     sprintf (filename, "%s/player/respawn.png", bman.datapath);
     tmpimage = IMG_Load (filename);
     if (tmpimage == NULL) {
-	printf ("Can't load image: %s\n", SDL_GetError ());
-	exit (1);
+		printf ("Can't load image: %s\n", SDL_GetError ());
+		exit (1);
     }
     gfx.respawn.frames = tmpimage->h / (2 * GFX_IMGSIZE);
     gfx.respawn.image  = scale_image (tmpimage, (2 * sx * tmpimage->w) / (2 * GFX_IMGSIZE), gfx.respawn.frames * (2 * sy)); 

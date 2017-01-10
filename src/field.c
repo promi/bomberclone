@@ -1,4 +1,4 @@
-/* $Id: field.c,v 1.60 2006/12/15 18:41:45 stpohle Exp $ */
+/* $Id: field.c,v 1.60 2006-12-15 18:41:45 stpohle Exp $ */
 /* field.c - procedures which are needed to control the field */
 
 #include "bomberclone.h"

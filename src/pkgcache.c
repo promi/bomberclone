@@ -1,4 +1,4 @@
-/* $Id: pkgcache.c,v 1.13 2006/08/19 23:41:47 stpohle Exp $
+/* $Id: pkgcache.c,v 1.14 2009-05-11 20:51:25 stpohle Exp $
  * Resendcache work, We need this to resend lost packets over the network.
  * we will keep every packet with the PKGF_ackreq flag as long as we haven't
  * got any answer from the destination host. And resend the packet after a givin
@@ -21,7 +21,7 @@ void rscache_init () {
 void rscache_add (_net_addr *addr, struct pkg *packet) {
 	int len;
 	
-	// d_printf ("rscache_add: addr %p, pkg %p\n", addr, packet);
+	// d_printf ("rscache_add: pl:%p, typ:%u id:%u\n", addr->pl_nr, packet->h.typ, packet->h.id);
 	/* check if there is still some free space left. */
 	if (rscache.count >= PKG_RESENDCACHE_SIZE) {
 		d_printf ("rscache_add no free rscache entry left.\n");
@@ -44,9 +44,9 @@ void rscache_delnr (int nr) {
 
 	if (nr >= 0 && nr < PKG_RESENDCACHE_SIZE) {
 		for (a = nr; a < rscache.count - 1; a++)
-			rscache.entry[nr] = rscache.entry[nr+1];
-			rscache.count--;
-			// d_printf ("rscache_delnr: element %d deleted.\n", nr);
+			rscache.entry[a] = rscache.entry[a+1];
+		rscache.count--;
+		d_printf ("rscache_delnr: element %d deleted.\n", nr);
 	}
 	else 
 		d_printf ("rscache_delnr: number is out of range (%d)\n", nr);
@@ -58,7 +58,7 @@ void rscache_delnr (int nr) {
 int rscache_del (_net_addr *addr, unsigned char typ, short unsigned int id) {
 	int i;
 
-	// d_printf ("rscache_del: addr %p (pl_nr:%d, typ:%d, id:%d\n", addr, addr->pl_nr, typ, id);
+	 // d_printf ("rscache_del: addr %p (pl_nr:%d, typ:%d, id:%u\n", addr, addr->pl_nr, typ, id);
 
 	for (i = 0; (i < rscache.count) && (i < PKG_RESENDCACHE_SIZE); i++) {
 		if (rscache.entry[i].addr.pl_nr == addr->pl_nr &&
@@ -85,8 +85,8 @@ void rscache_loop () {
             && rscache.entry[i].retry < RESENDCACHE_RETRY) {
             /* send it again */
             d_printf
-                ("Data Send Timeout (%s:%s) Resend now Package Fill %d, Pos %d\n",
-                 rscache.entry[i].addr.host, rscache.entry[i].addr.port, rscache.count,i);
+                ("Data Send Timeout Resend pl:%p, typ:%u id:%u Fill:%d Pos:%d\n", 
+                rscache.entry[i].addr.pl_nr, rscache.entry[i].packet.h.typ, rscache.entry[i].packet.h.id, rscache.count, i);
 
             udp_send (bman.sock, (char *) &rscache.entry[i].packet,
             			NTOH16 (rscache.entry[i].packet.h.len), 
@@ -100,8 +100,9 @@ void rscache_loop () {
 
         if (timestamp - rscache.entry[i].timestamp >= timeout
             && rscache.entry[i].retry >= RESENDCACHE_RETRY) {
-            d_printf ("Data Send Timeout (%s:%s) Delete Fill %d, Pos %d\n",
-                      rscache.entry[i].addr.host, rscache.entry[i].addr.port, rscache.count, i);
+            d_printf
+                ("Data Send Timeout Delete pl:%p, typ:%u id:%u Fill:%d Pos:%d\n", 
+                rscache.entry[i].addr.pl_nr, rscache.entry[i].packet.h.typ, rscache.entry[i].packet.h.id, rscache.count, i);
             if (rscache.entry[i].addr.pl_nr >= 0 && rscache.entry[i].addr.pl_nr < MAX_PLAYERS)
 				players[rscache.entry[i].addr.pl_nr].net.pkgopt.to_2sec++;
 			

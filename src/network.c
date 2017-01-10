@@ -1,4 +1,4 @@
-/* $Id: network.c,v 1.79 2007/01/12 22:42:31 stpohle Exp $ */
+/* $Id: network.c,v 1.79 2007-01-12 22:42:31 stpohle Exp $ */
 /*
 	network routines.
 */

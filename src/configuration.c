@@ -1,4 +1,4 @@
-/* $Id: configuration.c,v 1.82 2007/12/07 22:06:57 stpohle Exp $
+/* $Id: configuration.c,v 1.85 2009-11-28 13:11:51 stpohle Exp $
  * configuration */
 
 #include <SDL.h>
@@ -88,6 +88,7 @@ config_init (int argc, char **argv)
     bman.p_nr = -1;
     bman.p2_nr = -1;
     bman.gamename[0] = 0;
+    bman.playnum = 0;
     sprintf (bman.playername, "Player1");
     sprintf (bman.player2name, "Player2");
     sprintf (bman.port, "%d", DEFAULT_UDPPORT);
@@ -111,7 +112,7 @@ config_init (int argc, char **argv)
     map.size.y = 17;
     map.map[0] = 0;
     map.map_selection = 2;
-    map.type = -1;
+    map.type = 1;
     bman.firewall = 0;
     bman.init_timeout = GAME_TIMEOUT;
     bman.ai_players = 1;
@@ -335,6 +336,9 @@ config_read ()
         if (!strcmp (keyword, "mapselection")) {
             map.map_selection = atoi (value);
         }
+        if (!strcmp (keyword, "maptype")) {
+            map.type = atoi (value);
+        }
         if (!strcmp (keyword, "randomtileset")) {
             map.random_tileset = atoi (value);
         }
@@ -367,6 +371,21 @@ config_read ()
         }
         if (!strcmp (keyword, "start_speed")) {
             sscanf (value, "%f", &bman.start_speed);
+        }
+        if (!strcmp (keyword, "special_itembombs")) {
+            sscanf (value, "%d", &map.bombs);
+        }
+        if (!strcmp (keyword, "special_itemfire")) {
+            sscanf (value, "%d", &map.fire);
+        }
+        if (!strcmp (keyword, "special_itemshoes")) {
+            sscanf (value, "%d", &map.shoes);
+        }
+        if (!strcmp (keyword, "special_itemmixed")) {
+            sscanf (value, "%d", &map.mixed);
+        }
+        if (!strcmp (keyword, "special_itemdeath")) {
+            sscanf (value, "%d", &map.death);
         }
         if (!strcmp (keyword, "special_trigger")) {
             sscanf (value, "%d", &map.sp_trigger);
@@ -441,6 +460,17 @@ config_read ()
             keyb_gamekeys.keycode[BCK_pause] = atoi (value);
         if (!strcmp (keyword, "key_fullscreen"))
             keyb_gamekeys.keycode[BCK_fullscreen] = atoi (value);
+        /*
+         * joypad config 
+         */
+        if (!strcmp (keyword, "joy_1_drop"))
+   	        joy_keys[0].drop = atoi (value);
+        if (!strcmp (keyword, "joy_1_special"))
+   	        joy_keys[0].special = atoi (value);
+        if (!strcmp (keyword, "joy_2_drop"))
+   	        joy_keys[1].drop = atoi (value);
+        if (!strcmp (keyword, "joy_2_special"))
+   	        joy_keys[1].special = atoi (value);
     }
     fclose (config);
     return 0;
@@ -488,6 +518,7 @@ config_write ()
     fprintf (config, "bitsperpixel=%d\n", gfx.bpp);
     fprintf (config, "randomtileset=%d\n", map.random_tileset);
     fprintf (config, "mapselection=%d\n", map.map_selection);
+    fprintf (config, "maptype=%d\n", map.type);
     fprintf (config, "sndrate=%d\n", snd.audio_rate);
     fprintf (config, "sndchannels=%d\n", snd.audio_channels);
     fprintf (config, "sndformat=%d\n", snd.audio_format);
@@ -496,6 +527,11 @@ config_write ()
     fprintf (config, "start_bombs=%d\n", bman.start_bombs);
     fprintf (config, "start_range=%d\n", bman.start_range);
     fprintf (config, "start_speed=%f\n", bman.start_speed);
+    fprintf (config, "special_itembombs=%d\n", map.bombs);
+    fprintf (config, "special_itemfire=%d\n", map.fire);
+    fprintf (config, "special_itemshoes=%d\n", map.shoes);
+    fprintf (config, "special_itemmixed=%d\n", map.mixed);
+    fprintf (config, "special_itemdeath=%d\n", map.death);
 	fprintf (config, "special_trigger=%d\n", map.sp_trigger);
 	fprintf (config, "special_row=%d\n", map.sp_row);
 	fprintf (config, "special_push=%d\n", map.sp_push);
@@ -530,6 +566,13 @@ config_write ()
     fprintf (config, "key_mapmenu=%d\n", keyb_gamekeys.keycode[BCK_mapmenu]);
     fprintf (config, "key_pause=%d\n", keyb_gamekeys.keycode[BCK_pause]);
     fprintf (config, "key_playermenu=%d\n", keyb_gamekeys.keycode[BCK_playermenu]);
+    /*
+     * joypad config
+     */
+    fprintf (config, "joy_1_drop=%d\n", joy_keys[0].drop);
+    fprintf (config, "joy_1_special=%d\n", joy_keys[0].special);
+    fprintf (config, "joy_2_drop=%d\n", joy_keys[1].drop);
+    fprintf (config, "joy_2_special=%d\n", joy_keys[1].special);
 
     fclose (config);
     return 0;
@@ -548,6 +591,7 @@ config_video ()
         {"640x480", NULL},
         {"800x600", NULL},
         {"1024x768", NULL},
+        {"1280x800", NULL},
         {"1280x1024", NULL},
 		{"1600x1200", NULL},
         {"1920x1080", NULL},
@@ -631,8 +675,9 @@ config_menu ()
         menu = menu_new ("Configuration", 400, 300);
         menu_create_label (menu, "General Option", -1, 50, 1, COLOR_brown);
         menu_create_button (menu, "Playernames", 25, 85, 150, 1);
-        menu_create_button (menu, "Keyboard", 225, 85, 150, 2);
-        menu_create_button (menu, "Video Setup", -1, 120, 200, 3);
+        menu_create_button (menu, "Keyboard", 250, 85, 150, 2);
+        menu_create_button (menu, "Joypad", 25, 120, 150, 4);
+        menu_create_button (menu, "Video Setup", 250, 120, 150, 3);
         menu_create_label (menu, "Sound", 25, 154, 0, COLOR_brown);
         menu_create_bool (menu, "ON", 100, 150, 50, &snd.playsound, 4);
         menu_create_label (menu, "Music", 250, 154, 0, COLOR_brown);
@@ -666,6 +711,10 @@ config_menu ()
         case (3):              // Screen Options
             config_video ();
             break;
+       case (4):              // joypad Options
+            joypad_config ();
+            break;
+
         }
     }
     config_write ();

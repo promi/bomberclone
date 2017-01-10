@@ -1,4 +1,4 @@
-/* $Id: playermenu.c,v 1.18 2005/08/07 17:46:21 stpohle Exp $ 
+/* $Id: playermenu.c,v 1.18 2005-08-07 17:46:21 stpohle Exp $ 
  */
 
 #include "bomberclone.h"

@@ -1,4 +1,4 @@
-/* $Id: sysfunc.c,v 1.26 2007/12/09 22:13:03 stpohle Exp $
+/* $Id: sysfunc.c,v 1.26 2007-12-09 22:13:03 stpohle Exp $
     sysfunc.c - this file hold some routines for the system functions..
     like d_delay
 */

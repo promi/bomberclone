@@ -1,4 +1,4 @@
-/* $Id: single.c,v 1.86 2006/08/19 23:41:47 stpohle Exp $ */
+/* $Id: single.c,v 1.86 2006-08-19 23:41:47 stpohle Exp $ */
 /* single player */
 
 #include "basic.h"

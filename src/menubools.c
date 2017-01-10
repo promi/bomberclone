@@ -1,4 +1,4 @@
-/* $Id: menubools.c,v 1.2 2004/05/20 16:55:30 stpohle Exp $
+/* $Id: menubools.c,v 1.2 2004-05-20 16:55:30 stpohle Exp $
  * Menuhandling: bools */
 
 #include "basic.h"

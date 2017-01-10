@@ -1,4 +1,4 @@
-/* $Id: menulists.c,v 1.6 2005/03/27 01:31:50 stpohle Exp $
+/* $Id: menulists.c,v 1.6 2005-03-27 01:31:50 stpohle Exp $
  * Menuhandling: lists */
 
 

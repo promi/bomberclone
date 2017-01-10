@@ -1,4 +1,4 @@
-/* $Id: menuentrys.c,v 1.4 2004/05/20 16:55:30 stpohle Exp $
+/* $Id: menuentrys.c,v 1.4 2004-05-20 16:55:30 stpohle Exp $
  * Menuhandling: entry */
  
 

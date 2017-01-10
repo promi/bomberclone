@@ -1,4 +1,4 @@
-/* $Id: multiwait.c,v 1.59 2006/08/19 23:41:47 stpohle Exp $
+/* $Id: multiwait.c,v 1.60 2008-07-27 11:24:37 stpohle Exp $
    multiwait.c - this manages only the network screen where
    everyone have to select it's players and where even the basic chat is inside
 */
@@ -83,6 +83,11 @@ static void mw_keys_loop () {
 		 * the start key has pressed */
         bman.state = GS_ready;
         bman.updatestatusbar = 1; // force an update
+    }
+
+    if (GT_MP_PTPM && mw_check_players () < 2 && keyb_gamekeys.state[BCK_pause] && !keyb_gamekeys.old[BCK_pause]) {
+		font_gfxdraw (20,20,"There are not enough configured players", 0, COLOR_brown, 0x1000);
+		font_gfxdraw (20,40,"(each player needs to press Ctrl to select the role)", 0, COLOR_brown, 0x1000);
     }
 
 	if (keyb_gamekeys.state[BCK_fullscreen]  && !keyb_gamekeys.old[BCK_fullscreen]) {

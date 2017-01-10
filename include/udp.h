@@ -1,9 +1,10 @@
-/* $Id: udp.h,v 1.2 2005/03/27 01:31:50 stpohle Exp $
+/* $Id: udp.h,v 1.4 2009-12-18 11:05:37 stpohle Exp $
  * UDP Network */
 
 #ifndef _UDP_H
 #define _UDP_H
 
+#define UDP_LEN_HOSTNAME 128
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -25,6 +26,9 @@
 
 #ifdef _WIN32
 	#define _sockaddr sockaddr
+	#ifndef MSG_DONTWAIT
+	#define MSG_DONTWAIT 0
+	#endif
 #else
 	#define _sockaddr sockaddr_in6
 #endif

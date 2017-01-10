@@ -1,33 +1,9 @@
-/* $Id: udp.c,v 1.15 2006/08/12 12:44:06 stpohle Exp $ */
+/* $Id: udp.c,v 1.18 2009-12-18 11:05:37 stpohle Exp $ */
 /* udp.c code for the network
 	File Version 0.2
 */
 
-#define UDP_LEN_HOSTNAME 128
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <time.h>
-#include <sys/time.h>
-#ifdef _WIN32
-	#include <winsock.h>
-	#include <io.h>
-#else
-	#include <sys/socket.h>
-	#include <netinet/in.h>
-	#include <netdb.h>
-	#include <arpa/inet.h>
-	#include <unistd.h>
-	#include <sys/time.h>
-#endif
-
-#ifdef _WIN32
-	#define _sockaddr sockaddr
-#else
-	#define _sockaddr sockaddr_in6
-#endif
+#include "udp.h"
 
 extern char *dns_net_getip (char *host);
 extern int dns_filladdr (char *host, int hostlen, char *port, int portlen, int ai_family,
@@ -159,7 +135,7 @@ udp_send (int sock, char *text, int len, struct _sockaddr *sAddr, int ai_family)
 /* send udp broadcasted message */
 void udp_sendbroadcast (int sock, char *text, int len, struct _sockaddr *sAddr, int ai_family)
 {
-	unsigned char value;
+	char value;
 	
 	value = 1;
 	setsockopt(sock, SOL_SOCKET, SO_BROADCAST, &value, sizeof (value));
@@ -258,8 +234,12 @@ udp_server (char *port, int ai_family)
 int
 udp_get (int sock, char *text, int len, struct _sockaddr *sAddr, int ai_family)
 {
-    unsigned int clen,
-      msglen;
+#ifdef _WIN32
+	int clen;
+#else
+	unsigned int clen;
+#endif	
+	unsigned int msglen;
     fd_set sockset;
     struct timeval tval;
 
@@ -281,13 +261,10 @@ udp_get (int sock, char *text, int len, struct _sockaddr *sAddr, int ai_family)
     FD_SET (sock, &sockset);
 
     tval.tv_sec = 0;
-    tval.tv_usec = 100;
-
+	tval.tv_usec = 100;
     msglen = 0;
-
-    if (select (sock + 1, &sockset, NULL, NULL, &tval)) {
-
-        msglen = recvfrom (sock, text, len, 0, (struct sockaddr *) sAddr, &clen);
+    if (select (sock + 1, &sockset, NULL, NULL, &tval)) if (FD_ISSET (sock, &sockset)) {
+        msglen = recvfrom (sock, text, len, MSG_DONTWAIT, (struct sockaddr *) sAddr, &clen);
         if (msglen < 0)
             return 0;
 
@@ -303,12 +280,10 @@ dns_net_getip (char *host)
 {
     struct hostent *hAddr;
 
-    hAddr = gethostbyname (host);
-
+	hAddr = gethostbyname (host);
     if (hAddr == NULL)
         return NULL;
-
     strncpy (dnsip, inet_ntoa (*((struct in_addr *) hAddr->h_addr)), UDP_LEN_HOSTNAME);
 
-    return dnsip;
+	return dnsip;
 };

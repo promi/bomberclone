@@ -1,4 +1,4 @@
-/* $Id: packets.h,v 1.37 2007/02/22 21:32:58 stpohle Exp $
+/* $Id: packets.h,v 1.39 2009-05-11 20:51:25 stpohle Exp $
  * network packets.. */
 
 #ifndef _PACKETS_H_
@@ -13,34 +13,34 @@
  * only packets between client and server, all packets behinf PKG_field
  * are between all clients so they will be forwarded.					*/
 enum _network_data {
-    PKG_error = 0,
-	PKG_gameinfo,
-	PKG_joingame,	// every packet below here will checked 
-					// if it comes from a orginal player
-	PKG_contest,	
-	PKG_playerid,	
-    PKG_servermode,
-    PKG_pingreq,
-    PKG_pingack,
-    PKG_getfield,
-    PKG_getplayerdata,
-	PKG_teamdata,
-    PKG_fieldline,
-	PKG_pkgack,
-	PKG_mapinfo,
-	PKG_tunneldata,
-	PKG_updateinfo,	
-    PKG_field,			// forward - always be the first field
-    PKG_playerdata,		// forward
-    PKG_bombdata,		// forward
-    PKG_playerstatus,	// forward
-	PKG_playermove,		// forward
-	PKG_chat,			// forward
-	PKG_ill,			// forward
-	PKG_special,		// forward
-	PKG_dropitem,		// forward
-	PKG_respawn,		// forward
-	PKG_quit			// forward - always the last known type forwarded type
+	PKG_error = 0,		// 0
+	PKG_gameinfo,		// 1
+	PKG_joingame,		// 2 every packet below here will checked 
+						// if it comes from a orginal player
+	PKG_contest,		// 3
+	PKG_playerid,		// 4
+	PKG_servermode,		// 5
+	PKG_pingreq,		// 6
+	PKG_pingack,		// 7
+	PKG_getfield,		// 8
+	PKG_getplayerdata,	// 9 
+	PKG_teamdata,		// 10
+	PKG_fieldline,		// 11
+	PKG_pkgack,			// 12
+	PKG_mapinfo,		// 13
+	PKG_tunneldata,		// 14
+	PKG_updateinfo,		// 15
+	PKG_field,			// 16 forward - always be the first field
+	PKG_playerdata,		// 17 forward
+	PKG_bombdata,		// 18 forward
+	PKG_playerstatus,	// 19 forward
+	PKG_playermove,		// 20 forward
+	PKG_chat,			// 21 forward
+	PKG_ill,			// 22 forward
+	PKG_special,		// 23 forward
+	PKG_dropitem,		// 24 forward
+	PKG_respawn,		// 25 forward
+	PKG_quit			// 26 forward - always the last known type forwarded type
 };
 
 
@@ -51,15 +51,15 @@ enum _pkgflags {
 
 
 struct pkgheader {
-    unsigned char typ;
+	unsigned char typ;
 	unsigned char flags;
-    Sint16 id;
+	Sint16 id;
 	Sint16 len;
 } __attribute__((packed));
 
 struct pkg {
 	struct pkgheader h;
-    char data[0];
+	char data[0];
 } __attribute__((packed));
 
 struct pkg_bcmservchat {
@@ -176,6 +176,7 @@ struct pkg_playerid {
 	signed char netflags;		// network flags
 	Sint16 points;
 	Sint16 wins;
+	Sint16 nbrKilled;
 	signed char team_nr;		// team number
 	Sint16 team_points;			// team points
 	Sint16 team_wins;			// team wins
@@ -185,6 +186,7 @@ struct pkg_playerdata {
 	struct pkgheader h;
     signed char p_nr;			// Playernumber
 	Sint16 points;				// points
+	Sint16 nbrKilled;		        // number of player kill during a round
 	Sint16 wins;				// how many times we win
 	signed char gfx_nr;			// the gfx number we want to use
 	signed char team_nr;		// teamnumber of the player
@@ -211,6 +213,7 @@ struct pkg_playermove {
 struct pkg_bombdata {
 	struct pkgheader h;
     unsigned char p_nr;
+    unsigned char pi_nr;
     unsigned char b_nr;
     Sint16 x;
     Sint16 y;

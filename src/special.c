@@ -1,4 +1,4 @@
-/* $Id: special.c,v 1.39 2007/01/12 22:42:31 stpohle Exp $ */
+/* $Id: special.c,v 1.39 2007-01-12 22:42:31 stpohle Exp $ */
 /* special.c - procedues to control the specials */
 
 #include "bomberclone.h"
