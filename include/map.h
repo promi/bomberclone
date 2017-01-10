@@ -21,16 +21,16 @@
 
 #define MAP_POSITION_TOLERENCE 10
 
-struct __ex_field
+typedef struct __ex_field
 {
   unsigned char count;
   float frame;
   int bomb_b;			// BombID from the last know
   int bomb_p;			// explosion on this field
-} typedef _ex_field;
+} _ex_field;
 
 
-struct __field
+typedef struct __field
 {
   unsigned char type;
   signed char mixframe;		// data for the mixed frame
@@ -38,19 +38,19 @@ struct __field
   unsigned char special;      // to save special stones, or the tunnel number
   _ex_field ex[4];          	// count up every explosion there is on this field for ever direction
   Sint32 ex_nr;               // number to identify the explosion.
-} typedef _field;
+} _field;
 
 
 /* holds the locatition of a start point and the use count */
 
-struct __start_point
+typedef struct __start_point
 {
   _point pos;
   int used;
-} typedef _start_point;
+} _start_point;
 
 
-struct __map
+typedef struct __map
 {
   _point size;			// dimension of the field
 
@@ -75,7 +75,7 @@ struct __map
   int sp_kick;
   unsigned char state; // state of the map
   _start_point start_point[MAX_PLAYERS];  // array of starting points for this map
-} typedef _map;
+} _map;
 
 
 extern _map map;

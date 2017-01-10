@@ -49,13 +49,13 @@
 #include "sysfunc.h"
 #include "keybinput.h"
 
-struct
+typedef struct
 {
   char name[255];
-} typedef _serverlist;
+} _serverlist;
 
 
-struct
+typedef struct
 {
   char datapath[512];
 
@@ -101,16 +101,16 @@ struct
   int dropitemsondeath;	// if a player should drop items when he die
 
   unsigned char ai_players;	// number of ai players
-} typedef _bomberclone;
+} _bomberclone;
 
 #define IS_LPLAYER2 (bman.p2_nr != bman.p_nr && bman.p2_nr >= 0 && bman.p2_nr < MAX_PLAYERS)
 
 
-struct
+typedef struct
 {
   signed char dir;
   signed char bestdir;
-} typedef _airunaway;
+} _airunaway;
 
 
 extern _bomberclone bman;

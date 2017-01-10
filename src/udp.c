@@ -261,7 +261,7 @@ udp_get (int sock, char *text, int len, struct _sockaddr *sAddr, int ai_family)
 #else
   unsigned int clen;
 #endif
-  unsigned int msglen;
+  ssize_t msglen;
   fd_set sockset;
   struct timeval tval;
 

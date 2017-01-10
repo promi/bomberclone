@@ -741,6 +741,7 @@ send_servermode (_net_addr * addr, int pl_nr)
 void
 send_field (_net_addr * addr, int x, int y, _field * field)
 {
+  (void) field;
   struct pkg_field f_dat;
   int i;
 
@@ -1551,7 +1552,7 @@ void
 send_chat (_net_addr * addr, char *text)
 {
   struct pkg_chat chat_pkg;
-  int i;
+  size_t i;
 
   chat_pkg.h.typ = PKG_chat;
   chat_pkg.h.flags = 0;

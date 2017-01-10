@@ -653,8 +653,8 @@ menu_displaymessage (char *title, char *fmt, ...)
   va_list args;
 
   int maxlinelen = 0,         // max y size for the window
-      i,
-      linenr;
+    i,
+    linenr;
   char out[MENU_MESSAGES_MAXLINES * (MENU_MESSAGES_MAXLINELEN + 1)];
   char *lines[MENU_MESSAGES_MAXLINES + 1]; // textlines for the screen
   char text[512];

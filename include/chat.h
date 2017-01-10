@@ -10,7 +10,7 @@
 #define CHAT_TEXTCOLOR COLOR_gray
 #define CHAR_NETCOLOR COLOR_blue
 
-struct __chat
+typedef struct __chat
 {
   SDL_Rect window;
   signed char changed;	// if the chat windows has to redarwn after chat_loop
@@ -25,7 +25,7 @@ struct __chat
     int end;			// mark the end of one line
   } lines[CHAT_MAX_LINES];
   _keybinput input;
-} typedef _chat;
+} _chat;
 
 extern _chat chat;
 

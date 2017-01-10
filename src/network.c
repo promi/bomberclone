@@ -14,6 +14,7 @@ int
 network_server_port (char *server, char *host, int hostlen, char *port,
                      int portlen)
 {
+  (void) portlen;
   char *pos,
        *pos2;
 
@@ -207,7 +208,7 @@ network_shutdown ()
 int
 net_check_timeout (int pl_nr)
 {
-  int timeout = UDP_TIMEOUT;
+  unsigned int timeout = UDP_TIMEOUT;
 
   if ((players[pl_nr].state & (PSF_net + PSF_used + PSF_ai)) ==
       (PSF_used + PSF_net)
@@ -906,6 +907,7 @@ net_send_teamdata (int team_nr)
 void
 net_send_chat (char *text, signed char notigamesrv)
 {
+  (void) notigamesrv;
   int i;
 
   for (i = 0; i < MAX_PLAYERS; i++)

@@ -57,23 +57,23 @@ enum _playerstateflags  		//     not Set    |   Set
 #define PS_IS_used(__ps) (((__ps) & (PSFM_used)) != 0)
 #define PS_IS_aiplayer(__ps) ((((__ps) & (PSFM_used)) != 0) && (((__ps) & (PSF_ai)) == PSF_ai))
 
-struct
+typedef struct
 {
   int killedBy[MAX_PLAYERS];
   int killed;
   int unknown;
   int isaplayer;
-} typedef _gamestats;
+} _gamestats;
 
-struct
+typedef struct
 {
   float to;  // if (to > 0) the ilness is still working
   int datai;		// hold a integer data (like number of something..)
   float dataf;	// hold a float data (speed and so on)
-} typedef _playerilness;
+} _playerilness;
 
 
-struct
+typedef struct
 {
   int type; 					// type of the special
   float to;						// timeout
@@ -81,10 +81,10 @@ struct
   int use;					/* currently used set by special_use
 								   and deleted in special_loop */
   int clear;					// do we need to clear this special
-} typedef _special;
+} _special;
 
 
-struct
+typedef struct
 {
   _gfxplayer *gfx;			// pointer to the gfx information
   int gfx_nr;					// number of the player GFX
@@ -126,17 +126,17 @@ struct
 
   _net_player net;			// holds all important network data
   _gamestats gamestats;
-} typedef _player;
+} _player;
 
 
-struct __team
+typedef struct __team
 {
   _player *players[MAX_PLAYERS];
   char name[LEN_PLAYERNAME];
   int col;		// color of the Teamname
   int wins;
   int points;
-} typedef _team;
+} _team;
 
 
 // everything what is declared in players.c

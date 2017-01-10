@@ -12,7 +12,7 @@ enum _keybinputtype
   KEYBI_float
 };
 
-struct __keybinput
+typedef struct __keybinput
 {
   char text[KEYBI_LINE_LEN];
   short int curpos;
@@ -20,7 +20,7 @@ struct __keybinput
   char changed;
   int type;
   int maxlen;
-} typedef _keybinput;
+} _keybinput;
 
 
 extern void keybinput_new (_keybinput *ki, int type, int maxlen);

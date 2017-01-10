@@ -14,35 +14,35 @@
 
 #include "basic.h"
 
-struct __gfxblit
+typedef struct __gfxblit
 {
   SDL_Rect srcr;
   SDL_Surface *srci;
   SDL_Rect destr;
   SDL_Surface *desti;
   int y;
-} typedef _gfxblit;
+} _gfxblit;
 
 
-struct __gfxani
+typedef struct __gfxani
 {
   SDL_Surface *image;
   int frames;                 // how many single frames (image -> heigh / (1.5 * gamestyle.height))
   int w;						// size of a single frame
   int h;
-} typedef _gfxani;
+} _gfxani;
 
 
-struct __gfxplayer
+typedef struct __gfxplayer
 {
   _gfxani ani;
   _point offset;
   SDL_Surface *small_image;			// small size of the player (single frame)
   SDL_Surface *menu_image;			// menu image of the player (single frame)
-} typedef _gfxplayer;
+} _gfxplayer;
 
 
-struct __gfx
+typedef struct __gfx
 {
   SDL_Surface *screen;
   _point res;		// resolution
@@ -71,7 +71,7 @@ struct __gfx
   _gfxani menuselect; // The Menu Select GFX (the bomb ?)
 
   SDL_Surface *logo;
-} typedef _gfx;
+} _gfx;
 
 extern _gfx gfx;
 

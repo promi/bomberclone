@@ -22,7 +22,7 @@ enum _soundsample
   SND_max
 };
 
-struct __snd
+typedef struct __snd
 {
   unsigned char inited;
 
@@ -35,7 +35,7 @@ struct __snd
   int playmusic;
   int playsound;
 
-} typedef _snd;
+} _snd;
 
 extern _snd snd;
 

@@ -23,12 +23,12 @@ enum _dirbitmask   			  // bit mask for the directions
   DIRM_under = 16
 };
 
-struct __direntry
+typedef struct __direntry
 {
   unsigned char flags;
   char name[LEN_FILENAME];
   struct __direntry *next;
-} typedef _direntry;
+} _direntry;
 
 extern void s_delay (int ms);
 extern int s_fetchevent (SDL_Event *event);

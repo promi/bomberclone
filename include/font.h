@@ -19,11 +19,11 @@ enum _color
 };
 
 
-struct __font
+typedef struct __font
 {
   SDL_Surface *image[COLOR_max];
   _point size;
-} typedef _font;
+} _font;
 
 
 struct _key_codes

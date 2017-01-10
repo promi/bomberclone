@@ -25,7 +25,7 @@ enum _bombmode
 };
 
 
-struct
+typedef struct
 {
   _pointf pos;            // position of the bomb.
   _pointf oldpos;			// old position of the bomb.
@@ -46,7 +46,7 @@ struct
   _pointf source;			// start of a kicked bomb
   _pointf dest;            // destination to move the bomb to
   float fdata;			// float data: speed (moving bombs), pos (kicked bombs)
-} typedef _bomb;
+} _bomb;
 
 
 

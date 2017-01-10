@@ -32,7 +32,7 @@ enum _menu_type
 };
 
 
-struct __menuitem
+typedef struct __menuitem
 {
   SDL_Rect pos;
   int type;
@@ -47,10 +47,10 @@ struct __menuitem
   _charlist *list;
   void *menu;				// parent menu
   struct __menuitem *next;
-} typedef _menuitem;
+} _menuitem;
 
 
-struct
+typedef struct
 {
   char title[MENU_TITLELEN];
   _menuitem *items;
@@ -62,7 +62,7 @@ struct
   int focusvis;
   _menuitem menuitems[MENU_MAXENTRYS];
   int looprunning;
-} typedef _menu;
+} _menu;
 
 
 extern SDL_Surface *menuimages[9]; // holds the gfx

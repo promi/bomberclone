@@ -31,18 +31,18 @@ enum _bckeys
   BCK_max
 };
 
-struct
+typedef struct
 {
   Uint8 state [BCK_max];	// current state
   Uint8 old [BCK_max];	// old state
   int keycode [BCK_max];	// keycode
-} typedef BCGameKeys;
+} BCGameKeys;
 
-struct
+typedef struct
 {
   int drop;
   int special;
-} typedef BCGameJoystick;
+} BCGameJoystick;
 
 extern BCGameKeys keyb_gamekeys;
 extern BCGameJoystick joy_keys[2];

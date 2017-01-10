@@ -6,7 +6,7 @@
 /* maximum number of items which are saved in the list */
 #define FLITEMS_MAXITEMS 250
 
-struct __flyingitem
+typedef struct __flyingitem
 {
   _pointf pos;	// current position
   _pointf from;	// position from where the items comes
@@ -14,7 +14,7 @@ struct __flyingitem
   float step;		// step 0.0 is start 1.0 is end position
   unsigned char type;	// type
   struct __flyingitem *next;
-} typedef _flyingitem;
+} _flyingitem;
 
 extern void flitems_loop ();
 extern _flyingitem *flitems_findfree ();

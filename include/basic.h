@@ -199,25 +199,25 @@ enum _help_page
 };
 
 
-struct
+typedef struct
 {
   Sint16 x;
   Sint16 y;
-} __attribute__((packed)) typedef _point;
+} __attribute__((packed)) _point;
 
 
-struct
+typedef struct
 {
   float x;
   float y;
-} typedef _pointf;
+} _pointf;
 
 
-struct __charlist
+typedef struct __charlist
 {
   char text[LEN_CHARENTRY];
   struct __charlist *next;
-} typedef _charlist;
+} _charlist;
 
 extern _point dir_change[];
 

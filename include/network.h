@@ -58,16 +58,16 @@ enum _networkflags
 };
 
 
-struct    // this holds the network data
+typedef struct    // this holds the network data
 {
   char host[LEN_SERVERNAME];
   char port[LEN_PORT];
   struct _sockaddr sAddr;
   signed char pl_nr; // pl_nr so we know it in the pkgcache.
-} typedef _net_addr;
+} _net_addr;
 
 
-struct
+typedef struct
 {
   /* this will hold all needed data for the packet
   			timeout function */
@@ -75,10 +75,10 @@ struct
   signed char send_set; // start value for the packet data option (dynamic set)
   int to_2sec;		// how many unreached packets was send
   Uint32 to_timestamp;
-} typedef _net_pkgopt;
+} _net_pkgopt;
 
 
-struct
+typedef struct
 {
   _net_addr addr;			// holds the address
   int pingreq;			// just to send a ping and to save the number in here
@@ -89,7 +89,7 @@ struct
   unsigned char flags;	// keep some flags.. like NETF_firewall
   int firstplayer;		// number of the first player (only needed if NETF_local2 is set
   _net_pkgopt pkgopt;		// packet and network controll data
-} typedef _net_player;
+} _net_player;
 
 
 // network menu
