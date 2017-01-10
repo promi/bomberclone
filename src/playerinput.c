@@ -1,4 +1,4 @@
-/* $Id: playerinput.c,v 1.3 2004-09-13 22:15:57 stpohle Exp $
+/* $Id: playerinput.c,v 1.4 2015/07/10 21:59:37 steffen Exp $
  * playerinput 
  * 
  * the playerinput system will only set some values and flags of the player
@@ -55,7 +55,7 @@ playerinput_keyb_loop (int pl_nr)
 };
 
 
-inline void playerinput_keyb_read (int pk_offset, int pl_nr) {
+void playerinput_keyb_read (int pk_offset, int pl_nr) {
 	if (keyb_gamekeys.state[pk_offset + BCPK_up]) {
 		players[pl_nr].d = up;
 		players[pl_nr].m = 1;

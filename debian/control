@@ -1,0 +1,24 @@
+Source: bomberclone
+Section: games
+Priority: optional
+Maintainer: Steffen Pohle <steffen@bomberclone.de>
+Build-Depends: debhelper (>> 4.0.0)
+Standards-Version: 3.5.8
+
+Package: bomberclone
+Architecture: i386
+Depends: ${shlibs:Depends} ${misc:Depends}
+Description: This is a Bomberman like game with Single and Networkplay
+ This is a Bomberman like game. You have to drop bombs which will be
+ explode after a while. With this bombs you have to try to kill the
+ other players. If you are the last player in the game you have won.
+ It's very easy to play. You can find some powerups to get more range
+ for your bombs and to drop more as just one bomb.
+ Supports
+   Network support over IPv4 and IPv6
+   Singleplayer.
+   diffrent resolutions
+   tileset support
+   up to 8 players.
+   sound
+   diffrent gamefield sizes

@@ -1,4 +1,4 @@
-/* $Id: gfx.c,v 1.42 2009-10-10 09:43:55 stpohle Exp $ */
+/* $Id: gfx.c,v 1.43 2012/01/28 21:53:19 steffen Exp $ */
 /* gfx.c */
 
 #include "bomberclone.h"
@@ -37,8 +37,7 @@ int gfx_get_nr_of_playergfx () {
 void
 gfx_load_players (int sx, int sy)
 {
-    float sfkt,
-      ssfkt;
+    float sfkt;
     char filename[255];
     int i,
       r,
@@ -47,7 +46,6 @@ gfx_load_players (int sx, int sy)
     SDL_Surface *tmpimage,
      *tmpimage1;
     sfkt = ((float) sx) / ((float) GFX_IMGSIZE);
-    ssfkt = ((float) GFX_SMALLPLAYERIMGSIZE_X) / ((float) GFX_IMGSIZE);
 
 	d_printf ("gfx_load_players (%d, %d)\n", sx, sy);
 	
@@ -72,10 +70,10 @@ gfx_load_players (int sx, int sy)
 		    gfx.players[i].ani.image = SDL_DisplayFormat (tmpimage1);
             SDL_FreeSurface (tmpimage1);
 	    
-	    /* calculate the numbers of images for the animation */
-	    gfx.players[i].offset.x = (sx - gfx.players[i].ani.w) / 2;
-	    gfx.players[i].offset.y = -sy;
-	    SDL_FreeSurface (tmpimage);
+	        /* calculate the numbers of images for the animation */
+	        gfx.players[i].offset.x = (sx - gfx.players[i].ani.w) / 2;
+      	    gfx.players[i].offset.y = -sy;
+	        SDL_FreeSurface (tmpimage);
         }
     }
 

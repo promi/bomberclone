@@ -1,0 +1,40 @@
+# .SILENT:
+#
+# please do the changes manualy if the configure script won't work for you
+
+LIBS=`sdl-config --libs`
+CFLAGS=`sdl-config --cflags` -DHAVE_CONFIG_H -I../
+
+#
+# if you have SDLMIXER uncomment these two lines
+
+#SDLMIXER_LIBS=-lSDL_mixer
+#SDLMIXER_FLAGS=-DHAVE_SDL_MIXER
+
+OBJS=bomb.o field.o gfxengine.o main.o multiwait.o pkgcache.o special.o \
+     chat.o font.o gfx.o mapmenu.o netmenu.o player.o sysfunc.o \
+     configuration.o game.o gfxpixelimage.o map.o network.o single.o tileset.o \
+     debug.o gamesrv.o keybinput.o menu.o packets.o sound.o udp.o
+
+all: config bomberclone
+
+config:
+	echo "#define VERSION \"`cat ../configure.in |grep AM_INIT_AUTOMAKE\(bomberclone, |cut -c 31- |sed -e 's/)//g'`\"" >../config.h
+	echo "#define PACKAGE_DATA_DIR \"../data\"" >>../config.h
+rebuild: clean all
+
+bomberclone: $(OBJS)
+	gcc -o $@ $^ $(LIBS) $(SDLMIXER_LIBS)
+
+%.o: %.c
+	gcc $(CFLAGS) -c -o $@ $^ $(DFLAGS) $(SDLMIXER_FLAGS)
+
+clean:
+	rm -rf *.o
+	rm -rf ../config.h
+	rm -rf bomberclone
+
+cleanall: clean
+	rm *.*~
+
+source: cleanall

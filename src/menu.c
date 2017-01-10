@@ -1,4 +1,4 @@
-/* $Id: menu.c,v 1.53 2006-02-06 21:18:01 stpohle Exp $
+/* $Id: menu.c,v 1.55 2015/07/10 21:59:37 steffen Exp $
  * Menuhandling */
 
 #include "basic.h"
@@ -214,7 +214,7 @@ menu_draw (_menu * menu)
 
 
 /* draw an item on the screen */
-inline void
+void
 menu_draw_menuitem (_menuitem * m)
 {
     _menu *menu;
@@ -275,7 +275,7 @@ menu_reload (_menu * menu)
 
 
 /* reload variable into menuelement */
-inline void
+void
 menu_reload_menuitem (_menuitem * m)
 {
     switch (m->type) {
@@ -591,11 +591,10 @@ menu_dir_select (char *title, char *path, signed char dirflags)
       menuselect;
     _charlist *selfile = flist;
     _menu *menu;
-	_menuitem *dirmi;
 
     flcnt = menu_create_dirlist (path, dirflags, flist, MAX_DIRENTRYS);
     menu = menu_new (title, 300, 300);
-    dirmi = menu_create_list (menu, "Dir", -1, 50, 200, 200, flist, &selfile, 1);
+    menu_create_list (menu, "Dir", -1, 50, 200, 200, flist, &selfile, 1);
     menu_create_button (menu, "OK", -1, 270, 150, 0);
 	menu_focus_id (menu, 1);
 	

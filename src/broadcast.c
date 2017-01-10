@@ -1,4 +1,4 @@
-/* $Id: broadcast.c,v 1.7 2007-12-12 19:27:35 stpohle Exp $
+/* $Id: broadcast.c,v 1.7 2007/12/12 19:27:35 stpohle Exp $
  * find broadcasted games and also hold in this list 
  * all games which the ogc reports us */
  

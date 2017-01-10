@@ -1,4 +1,4 @@
-/* $Id: bomberclone.h,v 1.37 2009-05-11 20:51:25 stpohle Exp $ */
+/* $Id: bomberclone.h,v 1.37 2009/05/11 20:51:25 stpohle Exp $ */
 /* bomberclone.h */
 
 #ifndef _BOMBERCLONE_H_

@@ -1,4 +1,4 @@
-/* $Id: mapmenu.c,v 1.27 2006-07-30 11:44:58 stpohle Exp $ */
+/* $Id: mapmenu.c,v 1.28 2012/01/28 21:53:19 steffen Exp $ */
 /* map/tileset selection menu */
 
 #include "bomberclone.h"
@@ -174,15 +174,14 @@ mapinfo ()
 {
     _keybinput ki;
     SDL_Event event;
-    int x,
-      y,
+    int y,
       eventstate,
       done = 0;
     char text[255];
 
 // draw_menubox (WIN_X, WIN_Y);
 
-    x = gfx.res.x / 2;
+//    x = gfx.res.x / 2;
     y = gfx.res.y / 2 - WIN_Y / 2;
 
     sprintf (text, "Map Settings");

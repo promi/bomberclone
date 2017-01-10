@@ -1,4 +1,4 @@
-/* $Id: tileset.c,v 1.16 2004-09-26 02:28:07 stpohle Exp $ */
+/* $Id: tileset.c,v 1.17 2012/01/28 21:53:19 steffen Exp $ */
 /* load and select tilesets */
 
 #include "bomberclone.h"
@@ -72,7 +72,6 @@ tileset_load (char *tilesetname, int dx, int dy)
     char tileset[LEN_TILESETNAME];
     SDL_Surface *tmpimage,
      *tmpimage1;
-    float sfkt;
 
     d_printf ("Loading Tileset: %s\n", tilesetname);
     strncpy (tileset, tilesetname, LEN_TILESETNAME);
@@ -101,7 +100,6 @@ tileset_load (char *tilesetname, int dx, int dy)
 
     /* create Table of points */
     scale (gfx.postab, gfx.block.x, 256);
-    sfkt = ((float) gfx.block.x) / ((float) GFX_IMGSIZE);
 
     /* calculating the best offset for the field on the screen */
     gfx.offset.x = (gfx.res.x - (gfx.block.x * map.size.x)) / 2;

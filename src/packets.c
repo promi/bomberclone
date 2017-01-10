@@ -237,6 +237,7 @@ void
 do_contest (struct pkg_contest *ct_pkg, _net_addr * addr)
 {
     d_printf ("do_contest (pl_nr = %d) from=%d to=%d\n", addr->pl_nr, ct_pkg->from, ct_pkg->to);
+	if (ct_pkg == NULL) return;
 
     if (addr->pl_nr >= MAX_PLAYERS
         || (addr->pl_nr == -1 && PS_IS_netplayer (players[ct_pkg->from].state))) {
@@ -1594,8 +1595,8 @@ send_mapinfo (_net_addr * addr)
     map_pkg.sp_push = map.sp_push;
     map_pkg.start_bombs = bman.start_bombs;
     map_pkg.start_range = bman.start_range;
-    sprintf (map_pkg.start_speed, "%4f", bman.start_speed);
-    sprintf (map_pkg.bomb_tickingtime, "%4f", bman.bomb_tickingtime);
+    snprintf (map_pkg.start_speed, sizeof(map_pkg.start_speed), "%f", bman.start_speed);
+    snprintf (map_pkg.bomb_tickingtime, sizeof(map_pkg.bomb_tickingtime), "%f", bman.bomb_tickingtime);
 
     if (map.random_tileset)
         map_pkg.tileset[0] = 0;
@@ -1871,8 +1872,7 @@ do_pkg (struct pkg *packet, _net_addr * addr, int len)
      * check if the packet is from a player in the game and not from someone else
      * this exception is only for PKG_joingame, PKG_error */
     addr->pl_nr = get_player_nr (addr->host, addr->port);
-    if ((addr->pl_nr < 0 || addr->pl_nr >= MAX_PLAYERS) && packet->h.typ > PKG_joingame
-        && PS_IS_netplayer (players[addr->pl_nr].state)) {
+    if ((addr->pl_nr < 0 || addr->pl_nr >= MAX_PLAYERS) && packet->h.typ > PKG_joingame) {
         d_printf ("do_pkg: error addr->pl_nr out of range\n");
         return;
     }
@@ -1994,3 +1994,4 @@ do_pkg (struct pkg *packet, _net_addr * addr, int len)
         break;
     }
 };
+

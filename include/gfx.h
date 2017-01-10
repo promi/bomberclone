@@ -1,4 +1,4 @@
-/* $Id: gfx.h,v 1.10 2005-04-09 18:22:40 stpohle Exp $ */
+/* $Id: gfx.h,v 1.11 2015/07/10 21:59:37 steffen Exp $ */
 #ifndef _GFX_H_
 
 #define _GFX_H_
@@ -104,8 +104,8 @@ extern void gfxengine_init ();
 extern void gfx_blitdraw ();
 extern void gfx_blit (SDL_Surface *srci, SDL_Rect *srcr, SDL_Surface *desti, SDL_Rect *destr, int y);
 extern void gfx_blitsort ();
-extern inline void gfx_blitsortclear ();
-extern inline void gfx_blitupdaterectclear ();
+extern void gfx_blitsortclear ();
+extern void gfx_blitupdaterectclear ();
 extern void gfx_blitupdaterectdraw ();
 extern void gfx_blitupdaterectadd (SDL_Rect *rect);
 

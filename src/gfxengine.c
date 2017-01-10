@@ -1,4 +1,4 @@
-/* $Id: gfxengine.c,v 1.7 2005-07-06 13:11:55 stpohle Exp $ */
+/* $Id: gfxengine.c,v 1.8 2015/07/10 21:59:37 steffen Exp $ */
 /* GFX Game Engine */
 
 #include "bomberclone.h"
@@ -30,7 +30,7 @@ void gfx_blitsort () {
 
 
 /* delete sorted order of gfx updates */
-inline void gfx_blitsortclear () {
+void gfx_blitsortclear () {
 	register int i;
 	for (i = 0; i < MAX_BLITRECTS; i++)
 		sortblitdb[i] = NULL;
@@ -38,7 +38,7 @@ inline void gfx_blitsortclear () {
 
 
 /* delete all updaterect entrys */
-inline void gfx_blitupdaterectclear () {
+void gfx_blitupdaterectclear () {
 	register int i;
 	for (i = 0; i < MAX_BLITRECTS; i++)
 		blitrects[i].x = blitrects[i].y = blitrects[i].h = blitrects[i].w = -1;

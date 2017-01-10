@@ -1,4 +1,4 @@
-/* $Id: sysfunc.c,v 1.26 2007-12-09 22:13:03 stpohle Exp $
+/* $Id: sysfunc.c,v 1.27 2015/07/10 21:59:37 steffen Exp $
     sysfunc.c - this file hold some routines for the system functions..
     like d_delay
 */
@@ -54,7 +54,7 @@ s_random (int maxnr)
 
 
 #if !defined(HAVE_RINTF) && !defined(HAVE_RINT)
-inline float rintf (float f) {
+float rintf (float f) {
        if (CUTINT (f) < 0.5f)
                return (floorf (f));
        else
@@ -219,7 +219,7 @@ char* getfilename(char* path)
 
 /* swap 16bit integers, needed for
    little and big endian convert */
-inline Sint16 s_swap16 (Sint16 i) {
+Sint16 s_swap16 (Sint16 i) {
 	Sint16 r;
 	char *z1 = (char *)&i;
 	char *z2 = (char *)&r;
@@ -233,7 +233,7 @@ inline Sint16 s_swap16 (Sint16 i) {
 
 /* swap 32bit integers, needed for
    little and big endian convert */
-inline Sint32 s_swap32 (Sint32 i) {
+Sint32 s_swap32 (Sint32 i) {
 	Sint32 r;
 	int j;
 	char *z1 = (char *) &i;
@@ -248,7 +248,7 @@ inline Sint32 s_swap32 (Sint32 i) {
 
 extern Uint32 game_timediff, game_timediff1;
 
-inline void s_calctimesync () {
+void s_calctimesync () {
 	Uint32 timeloop1;
 	
     // calculate time sync.

@@ -1,4 +1,4 @@
-/* $Id: bomb.h,v 1.8 2009-05-11 20:51:25 stpohle Exp $
+/* $Id: bomb.h,v 1.9 2015/07/10 21:59:37 steffen Exp $
  * bomb include file
  */
 
@@ -49,7 +49,7 @@ struct {
 // for the bomb..
 extern void bomb_loop ();
 extern void bomb_explode (_bomb * bomb, int net);
-extern inline void bomb_action (_bomb * bomb);
+extern void bomb_action (_bomb * bomb);
 extern void bomb_move (_bomb * bomb);
 extern void bomb_kicked (_bomb * bomb);
 extern void get_bomb_on (float x, float y, _point bombs[]);

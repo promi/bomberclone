@@ -65,7 +65,7 @@ int keybinput_loop (_keybinput *ki, SDL_Event *event) {
 		ki->len = strlen (ki->text);
 	}
 	
-	if (keybinput_oldkey == SDLK_RETURN && event->type == SDL_KEYUP)
+	if ((keybinput_oldkey == SDLK_RETURN || keybinput_oldkey == SDLK_KP_ENTER) && event->type == SDL_KEYUP)
 		keyu = 1;
 	else if (keybinput_oldkey == SDLK_ESCAPE && event->type == SDL_KEYUP)
 		keyu = -1;

@@ -1,4 +1,4 @@
-/* $Id: player.c,v 1.108 2009-10-11 17:14:47 stpohle Exp $
+/* $Id: player.c,v 1.109 2012/01/28 21:53:19 steffen Exp $
  * player.c - everything what have to do with the player */
 
 #include <SDL.h>
@@ -120,7 +120,6 @@ restore_players_screen ()
 {
     int i,
       x,
-      xs,
       xe,
       y,
       ys,
@@ -155,7 +154,6 @@ restore_players_screen ()
                 if (ye >= map.size.y)
                     ye = map.size.y - 1;
 				// redrawing of the stone
-                xs = x;
                 for (; x <= xe; x++)
                     for (y = ys; y <= ye; y++)
                         stonelist_add (x, y);
@@ -445,7 +443,7 @@ get_killer_for_explosion (short int x, short int y)
 void
 player_move (int pl_nr)
 {
-    int oldd, coll_speed;
+    int oldd;
     _player *p = &players[pl_nr];
 
     if (p->tunnelto > 0.0f) {
@@ -460,7 +458,6 @@ player_move (int pl_nr)
             player_animation (p);
     		oldd = p->d;
             p->stepsleft = p->speed * timefactor;
-			coll_speed = p->collect_shoes;
             do {
                 p->d = oldd;
 			} while ((p->stepsleft = stepmove_player (pl_nr)) > 0);
@@ -677,9 +674,7 @@ void
 player_calcpos ()
 {
     _player *pl;
-    int oldm,
-      oldd,
-      p;
+    int p;
 	float oldspeed;
 
     for (p = 0; p < MAX_PLAYERS; p++) {
@@ -687,8 +682,6 @@ player_calcpos ()
         if (PS_IS_netplayer (pl->state) && PS_IS_alife (pl->state) && pl->m != 0) {
 		    player_animation (pl);
 			oldspeed = pl->speed;
-            oldm = pl->m;
-            oldd = pl->d;
             if (pl->speed > 0.0) {
 				pl->speed *= timefactor;
                 stepmove_player (p);

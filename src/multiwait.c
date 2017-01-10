@@ -1,4 +1,4 @@
-/* $Id: multiwait.c,v 1.60 2008-07-27 11:24:37 stpohle Exp $
+/* $Id: multiwait.c,v 1.60 2008/07/27 11:24:37 stpohle Exp $
    multiwait.c - this manages only the network screen where
    everyone have to select it's players and where even the basic chat is inside
 */

@@ -1,0 +1,2 @@
+?package(bomberclone):needs=X11 section=Games/Arcade \
+  title="BomberClone" command="/usr/games/bomberclone"

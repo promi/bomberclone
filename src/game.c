@@ -1,4 +1,4 @@
-/* $Id: game.c,v 1.120 2009-05-11 20:51:25 stpohle Exp $ 
+/* $Id: game.c,v 1.121 2015/07/07 20:57:06 steffen Exp $ 
   game.c - procedures for the game. */
 
 #include <string.h>
@@ -916,7 +916,7 @@ game_showresult ()
             bman.state = GS_startup;
         }
 
-        if ((keys[SDLK_RETURN] || keys[SDLK_LCTRL] || keys[SDLK_RCTRL]) && (!keypressed)
+        if ((keys[SDLK_RETURN] || keys[SDLK_KP_ENTER] || keys[SDLK_LCTRL] || keys[SDLK_RCTRL]) && (!keypressed)
             && (event.type = SDL_KEYDOWN)) {
             done = 1;
             keypressed = 1;

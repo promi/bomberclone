@@ -1,4 +1,4 @@
-/* $Id: configuration.c,v 1.85 2009-11-28 13:11:51 stpohle Exp $
+/* $Id: configuration.c,v 1.86 2015/07/10 21:59:37 steffen Exp $
  * configuration */
 
 #include <SDL.h>
@@ -734,7 +734,7 @@ ReadPrgArgs (int argc, char **argv)
             printf (" Bug Report to :\n");
             printf ("   http://sourceforge.net/tracker/?group_id=79449&atid=556629\n");
             printf (" Other Comments: steffen@bomberclone.de\n");
-            printf ("\nProgramm options:\n");
+            printf ("\nProgram options:\n");
             printf (" -name PLAYERNAME   - set the Playername\n");
             printf (" -name2 PLAYERNAME  - set the Playername for the second player\n");
             printf (" -gamename GAMENAME - set the name of the game\n");

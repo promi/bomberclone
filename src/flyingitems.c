@@ -1,4 +1,4 @@
-/* $Id: flyingitems.c,v 1.4 2004-04-03 14:48:43 stpohle Exp $ */
+/* $Id: flyingitems.c,v 1.4 2004/04/03 14:48:43 stpohle Exp $ */
 
 #include "bomberclone.h"
 #include "flyingitems.h"

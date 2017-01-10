@@ -1,4 +1,4 @@
-/* $Id: field.c,v 1.60 2006-12-15 18:41:45 stpohle Exp $ */
+/* $Id: field.c,v 1.61 2015/07/10 21:59:37 steffen Exp $ */
 /* field.c - procedures which are needed to control the field */
 
 #include "bomberclone.h"
@@ -63,7 +63,7 @@ _stonelist_add (int x, int y, int recursive)
 };
 
 
-inline void
+void
 stonelist_add (int x, int y)
 {
     _stonelist_add (x, y, 1);

@@ -1,4 +1,4 @@
-/* $Id: single.c,v 1.86 2006-08-19 23:41:47 stpohle Exp $ */
+/* $Id: single.c,v 1.88 2015/07/10 21:59:37 steffen Exp $ */
 /* single player */
 
 #include "basic.h"
@@ -81,7 +81,7 @@ void ai_team_choosegfx () {
 
 
 
-inline int
+int
 ai_checkfield (int x, int y)
 {
     return ((map.field[x][y].type == FT_nothing || map.field[x][y].type == FT_fire
@@ -400,7 +400,7 @@ ai_findnearbombs (_point pos)
 
 /* check if we are still running and fill out the position 
 	return == 0 we're still walking ... else we have reached a point */
-inline int
+int
 ai_checkpos (_player * pl, _point * pos)
 {
     _pointf _p;
@@ -454,7 +454,7 @@ ai_choosedir (int dir, int nearbomb, int oldpos)
 };
 
 
-inline int
+int
 ai_invertdir (int dir)
 {
     int idir;
@@ -476,7 +476,7 @@ ai_invertdir (int dir)
 };
 
 
-inline int
+int
 ai_checknewpos (_point pos, int d)
 {
     _point m;
@@ -711,7 +711,6 @@ single_menu ()
     _charlist nrplayerlist[MAX_PLAYERS + 1];
     _charlist *selnrplayer = &nrplayerlist[bman.ai_players];
 	_menu *menu;
-	_menuitem *aiplayer = NULL;
 	SDL_Event event;
 
     /* fill in the nrplayerlist */
@@ -729,7 +728,7 @@ single_menu ()
 	menu = menu_new ("Single Game", 380,240);
 	
 	menu_create_text (menu, "numpl", 20, 50, 12, 2, COLOR_yellow, "Number of\nAI Players");
-	aiplayer = menu_create_list (menu, "AI Players", 40, 90, 50, 100, nrplayerlist, &selnrplayer, 3);
+	menu_create_list (menu, "AI Players", 40, 90, 50, 100, nrplayerlist, &selnrplayer, 3);
 	
 	menu_create_button (menu,"Change Playernames" ,160, 50, 210, 4);
 

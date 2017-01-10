@@ -1,5 +1,5 @@
 
-bomberclone_tilesetdir = $(prefix)/@NO_PREFIX_PACKAGE_DATA_DIR@/tileset/cementery
+bomberclone_tilesetdir = $(prefix)/@NO_PREFIX_PACKAGE_DATA_DIR@/tileset/cemetery
 
 bomberclone_tileset_DATA = \
 	background.png \

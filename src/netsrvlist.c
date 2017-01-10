@@ -1,4 +1,4 @@
-/* $Id: netsrvlist.c,v 1.17 2005-08-07 17:46:21 stpohle Exp $
+/* $Id: netsrvlist.c,v 1.18 2012/01/28 21:53:19 steffen Exp $
  * netsrvlist.c - shows a list of possible servers.*/
  
 #include "basic.h"
@@ -124,7 +124,6 @@ void net_getserver () {
 	_charlist *sel_entry = &srvlst_text[0];
 	_menu *menu;
 	_menuitem *srvlst_listmenu;
-	_menuitem *srvlst_entry;
     SDL_Event event;
 	
 	d_printf ("net_getserver\n");
@@ -137,7 +136,7 @@ void net_getserver () {
 
 	menu = menu_new ("Join a Game", 500, 400);
 	srvlst_listmenu = menu_create_list (menu, "Host a Game", -1, 50, 475, 250, srvlst_text, &sel_entry, 1);
-	srvlst_entry = menu_create_entry (menu, "IP :", -1, 320, 475, bman.servername, LEN_SERVERNAME+LEN_PORT + 2, MENU_entrytext, 2);	
+	menu_create_entry (menu, "IP :", -1, 320, 475, bman.servername, LEN_SERVERNAME+LEN_PORT + 2, MENU_entrytext, 2);	
 	menu_create_button (menu, "OK", -1, 350, 150, 0);
 	menu_focus_id (menu, 1);
 

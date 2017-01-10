@@ -1,4 +1,4 @@
-/* $Id: gfxpixelimage.c,v 1.13 2005-04-09 18:22:41 stpohle Exp $ */
+/* $Id: gfxpixelimage.c,v 1.15 2015/07/10 21:59:37 steffen Exp $ */
 /* gfx pixel manipulation and image manipulation */
 
 #include "bomberclone.h"
@@ -54,7 +54,7 @@ getpixel (SDL_Surface * surface, int x, int y)
 };
 
 
-static inline Uint32
+static Uint32
 getpixel32 (SDL_Surface * surface, int x, int y)
 {
     /* Here p is the address to the pixel we want to retrieve */
@@ -63,7 +63,7 @@ getpixel32 (SDL_Surface * surface, int x, int y)
 };
 
 
-static inline Uint32
+static Uint32
 getpixel24 (SDL_Surface * surface, int x, int y)
 {
     /* Here p is the address to the pixel we want to retrieve */
@@ -76,7 +76,7 @@ getpixel24 (SDL_Surface * surface, int x, int y)
 };
 
 
-static inline Uint32
+static Uint32
 getpixel16 (SDL_Surface * surface, int x, int y)
 {
     /* Here p is the address to the pixel we want to retrieve */
@@ -86,7 +86,7 @@ getpixel16 (SDL_Surface * surface, int x, int y)
 
 
 /* putpixel seperated for every BPP version */
-inline void
+void
 putpixel (SDL_Surface * surface, int x, int y, Uint32 pixel)
 {
     /* Here p is the address to the pixel we want to set */
@@ -119,7 +119,7 @@ putpixel (SDL_Surface * surface, int x, int y, Uint32 pixel)
 };
 
 
-static inline void
+static void
 putpixel32 (SDL_Surface * surface, int x, int y, Uint32 pixel)
 {
     /* Here p is the address to the pixel we want to set */
@@ -128,7 +128,7 @@ putpixel32 (SDL_Surface * surface, int x, int y, Uint32 pixel)
 };
 
 
-static inline void
+static void
 putpixel24 (SDL_Surface * surface, int x, int y, Uint32 pixel)
 {
     /* Here p is the address to the pixel we want to set */
@@ -145,7 +145,7 @@ putpixel24 (SDL_Surface * surface, int x, int y, Uint32 pixel)
 };
 
 
-static inline void
+static void
 putpixel16 (SDL_Surface * surface, int x, int y, Uint32 pixel)
 {
     /* Here p is the address to the pixel we want to set */
@@ -285,10 +285,6 @@ scale_image (SDL_Surface *orginal, int newx, int newy)
 SDL_Surface *
 makegray_image (SDL_Surface * org)
 {
-    Uint32 rmask,
-      gmask,
-      bmask,
-      amask;
     Uint32 pixel,
       transpixel = 0;
     SDL_Surface *dest;
@@ -299,18 +295,6 @@ makegray_image (SDL_Surface * org)
       g,
       b,
       gray;
-
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    rmask = 0xff000000;
-    gmask = 0x00ff0000;
-    bmask = 0x0000ff00;
-    amask = 0x000000ff;
-#else /*  */
-    rmask = 0x000000ff;
-    gmask = 0x0000ff00;
-    bmask = 0x00ff0000;
-    amask = 0xff000000;
-#endif /*  */
 
 	dest = SDL_CreateRGBSurface (SDL_SWSURFACE, org->w, org->h, org->format->BitsPerPixel,
                                  org->format->Rmask, org->format->Gmask,

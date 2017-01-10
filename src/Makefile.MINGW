@@ -1,0 +1,38 @@
+# .SILENT:
+LIBS=-L/usr/local/lib -lmingw32 -lSDLmain -lSDL -mwindows -mno-cygwin -liberty -lwsock32
+CFLAGS=-I/usr/local/include/SDL -Dmain=SDL_main -I/usr/include/mingw -DWIN32 -Uunix -mno-cygwin
+
+OBJS=bomb.o configuration.o debug.o gfx.o main.o field.o font.o game.o gamesrv.o menu.o netmenu.o network.o packets.o pkgcache.o player.o sysfunc.o udp.o chat.o multiwait.o keybinput.o single.o mapmenu.o
+
+
+all: config bomberclone
+
+config:
+	echo "#define VERSION \"`grep project.version ../bomberclone.prj |cut -c 17-`\"" >../config.h
+	
+rebuild: clean all
+
+bomberclone: $(OBJS)
+	gcc -o $@ $^ $(LIBS)
+
+%.o: %.c
+	gcc $(CFLAGS) -c -o $@ $^ $(DFLAGS)
+
+clean:
+	del *.o
+	del bomberclone.exe
+
+cleanall: clean
+	del *.*~
+
+source: cleanall
+
+
+
+
+
+
+
+
+
+

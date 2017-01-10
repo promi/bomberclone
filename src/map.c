@@ -1,4 +1,4 @@
-/* $Id: map.c,v 1.28 2009-05-11 20:51:25 stpohle Exp $ */
+/* $Id: map.c,v 1.28 2009/05/11 20:51:25 stpohle Exp $ */
 /* map handling, like generate and load maps. */
 
 #include "bomberclone.h"

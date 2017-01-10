@@ -1,4 +1,21 @@
-$Id: ChangeLog,v 1.133 2010-12-11 21:27:55 steffen Exp $
+$Id: ChangeLog,v 1.137 2015/07/10 21:59:37 steffen Exp $
+
+10.07.2015: serval patches from Peter Spiess-Knafl applied
+- changed: enter key on the numpad works now also in menus
+
+- fixed: spelling
+
+- deleted: inline calls and changed configure.ac file to newser version,
+		  also Werror and Wall flag is now set at the end of configure.ac
+
+- fixed: segfault within paket handling, ct_pkg is not checked for NULL
+         also the check for invalid playernumber could cause a segfault.
+
+28.03.2015:
+- fixed: buffer overflow in send_mapinfo, found by sourceforge user whiteduck.
+         snprintf is now used.
+
+- code cleanup: compiling should work now without any warnings.
 
 Version 0.11.9
 ==============
@@ -17,7 +34,7 @@ Version 0.11.9
 
 - got a big patch file from Michel Bernay which fixes:
   fixed: bug about compute points of the winner in multiplayer mode
-  fixed: bug for server for coputing point (Suppress all process in
+  fixed: bug for server for computing point (Suppress all process in
          reception of playerdata)
   fixed: bug in cache managment (lot of messages lost by function 
          rscachedel)

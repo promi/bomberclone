@@ -1,5 +1,5 @@
 
-INCLUDES = -I../include
+# INCLUDES = -I../include
 
 bin_PROGRAMS = bomberclone
 
@@ -55,3 +55,4 @@ bc-res.o: bc-res.rc
 	windres -i bc-res.rc -o bc-res.o
 	rm bomberclone.ico
 endif
+

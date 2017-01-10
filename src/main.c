@@ -1,4 +1,4 @@
-/* $Id: main.c,v 1.37 2008-07-27 11:24:37 stpohle Exp $ */
+/* $Id: main.c,v 1.38 2015/03/28 22:54:09 steffen Exp $ */
 
 #include "basic.h"
 #include "bomberclone.h"

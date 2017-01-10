@@ -1,4 +1,4 @@
-/* $Id: menuentrys.c,v 1.4 2004-05-20 16:55:30 stpohle Exp $
+/* $Id: menuentrys.c,v 1.5 2015/07/07 20:57:06 steffen Exp $
  * Menuhandling: entry */
  
 
@@ -150,7 +150,7 @@ int menu_event_entry (_menuitem *mi, SDL_Event *event) {
 				menu_focus_prev ((_menu *)mi->menu);
 			else if (event->key.keysym.sym == SDLK_DOWN) 
 				menu_focus_next ((_menu *)mi->menu);
-			else if (event->key.keysym.sym == SDLK_RETURN || event->key.keysym.sym == SDLK_RCTRL || event->key.keysym.sym == SDLK_RCTRL)
+			else if (event->key.keysym.sym == SDLK_RETURN || event->key.keysym.sym == SDLK_KP_ENTER || event->key.keysym.sym == SDLK_RCTRL || event->key.keysym.sym == SDLK_RCTRL)
 				menu_entry_save (mi);
 			else if (event->key.keysym.sym == SDLK_ESCAPE)
 				menu_entry_restore (mi);

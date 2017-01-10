@@ -1,4 +1,4 @@
-/* $Id: keyb.c,v 1.7 2008-07-27 11:24:37 stpohle Exp $
+/* $Id: keyb.c,v 1.8 2012/01/28 21:53:19 steffen Exp $
  * keyb.c
  */
 
@@ -180,19 +180,13 @@ void keyb_config_createkeymenu (_menu *menu, int key, int x, int y, int menu_nr)
 void keyb_config_joypad (int key) {
 	unsigned int n = 0;
 	SDL_Event event;
-	Uint8 *keys;
-	int keypressed = 0,	done = 0, eventstate = 0, reorder = 0, i, j;
+	int done = 0, eventstate = 0, reorder = 0, i, j;
 
 	if (joy[0] == NULL || key < 0 || key >= BCK_max) return;
 	
 	SDL_JoystickUpdate ();
 	
 	menu_displaytext ("Joypad Config", "Please press the new key\nfor this function.");
-	
-	keys = SDL_GetKeyState (NULL);
-	if (keys[SDLK_RETURN] || keys[SDLK_ESCAPE])
-		keypressed = 1;
-	
 	timestamp = SDL_GetTicks (); // needed for time sync.
 	
 	while (!reorder && !done && bman.state != GS_quit) {
@@ -205,7 +199,6 @@ void keyb_config_joypad (int key) {
 				reorder = 0;
 		}
 		
-		// eventstate = s_fetchevent (&event);
 		SDL_JoystickEventState ( SDL_QUERY ); // js
 		SDL_JoystickUpdate ();
 		
@@ -245,9 +238,7 @@ void keyb_config_joypad (int key) {
 void keyb_config_readkey (int key) {
 	int newkey;
     SDL_Event event;
-    Uint8 *keys;
-    int keypressed = 0,
-        done = 0,
+    int done = 0,
         eventstate = 0,
         reorder = 0;
 		newkey = 0;
@@ -257,11 +248,6 @@ void keyb_config_readkey (int key) {
 		return;
 	
 	menu_displaytext ("Keyboard Config", "Please press the new key\nfor this function.");
-
-    keys = SDL_GetKeyState (NULL);
-    if (keys[SDLK_RETURN] || keys[SDLK_ESCAPE])
-        keypressed = 1;
-
     timestamp = SDL_GetTicks (); // needed for time sync.
 
     while (!reorder && !done && bman.state != GS_quit) {

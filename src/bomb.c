@@ -1,4 +1,4 @@
-/* $Id: bomb.c,v 1.71 2009-05-11 20:51:25 stpohle Exp $ */
+/* $Id: bomb.c,v 1.73 2015/07/10 21:59:37 steffen Exp $ */
 /* everything what have to do with the bombs */
 
 #include "bomberclone.h"
@@ -503,17 +503,12 @@ int explosion_check_field (int x, int y, _bomb *bomb)
  * the bomb was kicked.. so move the bomb in the right way..
  */
 void bomb_kicked (_bomb * bomb) {
-	float dist, dX, dY, pX, pY;
+	float dX, dY, pX, pY;
 	
 	pX = dX = bomb->dest.x - bomb->source.x;
 	pY = dY = bomb->dest.y - bomb->source.y;
 	if (pX < 0.0f) pX = -dX;
 	if (pY < 0.0f) pY = -dY;
-	if (pX == 0.0f) dist = pY;
-	else if (pY == 0.0f) dist = pX;
-	else {
-		dist = sqrtf (powf (pX,2) + powf (pY,2));
-	}
 	
 	bomb->fdata += timediff; // * (SPECIAL_KICK_MAXDIST / dist);
 	if (bomb->fdata >= 1.0f) {
@@ -530,8 +525,7 @@ void bomb_kicked (_bomb * bomb) {
 };
 
 
-inline void bomb_action (_bomb * bomb)
-{
+void bomb_action (_bomb * bomb) {
     switch (bomb->mode) {
     case (BM_moving):
     case (BM_liquid):

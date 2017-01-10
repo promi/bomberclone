@@ -1,4 +1,4 @@
-/* $Id: menulists.c,v 1.6 2005-03-27 01:31:50 stpohle Exp $
+/* $Id: menulists.c,v 1.7 2015/07/07 20:57:06 steffen Exp $
  * Menuhandling: lists */
 
 
@@ -296,7 +296,7 @@ int menu_event_list (_menuitem *mi, SDL_Event *event) {
 				menu_list_select_prev (mi);
 			else if (event->key.keysym.sym == SDLK_DOWN) 
 				menu_list_select_next (mi);
-			else if (event->key.keysym.sym == SDLK_RETURN || event->key.keysym.sym == SDLK_RCTRL || event->key.keysym.sym == SDLK_RCTRL)
+			else if (event->key.keysym.sym == SDLK_RETURN || event->key.keysym.sym == SDLK_KP_ENTER || event->key.keysym.sym == SDLK_RCTRL || event->key.keysym.sym == SDLK_RCTRL)
 				return 1;
 			break;
 		case (SDL_KEYUP):

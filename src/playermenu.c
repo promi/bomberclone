@@ -1,4 +1,4 @@
-/* $Id: playermenu.c,v 1.18 2005-08-07 17:46:21 stpohle Exp $ 
+/* $Id: playermenu.c,v 1.19 2015/07/07 20:57:06 steffen Exp $ 
  */
 
 #include "bomberclone.h"
@@ -176,7 +176,7 @@ int playermenu_selgfx (int pl_nr) {
 				/*
 				 * select the current gfx if aviable
 				 */
-				else if (event.key.keysym.sym == SDLK_RETURN
+				else if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_KP_ENTER
 					|| event.key.keysym.sym == SDLK_LCTRL || event.key.keysym.sym == SDLK_RCTRL 
 					|| event.key.keysym.sym == keyb_gamekeys.keycode[BCPK_drop] || event.key.keysym.sym == keyb_gamekeys.keycode[BCPK_special] 
 					|| event.key.keysym.sym == keyb_gamekeys.keycode[BCPK_max + BCPK_drop] || event.key.keysym.sym == keyb_gamekeys.keycode[BCPK_max + BCPK_special]) {

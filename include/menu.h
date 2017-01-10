@@ -1,4 +1,4 @@
-/* $Id: menu.h,v 1.13 2004-09-25 10:57:50 stpohle Exp $
+/* $Id: menu.h,v 1.14 2015/07/10 21:59:37 steffen Exp $
  * GUI for menuhandling
  */
 
@@ -86,10 +86,10 @@ extern int menu_event_loop (_menu *menu, SDL_Event *event, int eventstate);
 extern void menu_draw (_menu *menu);
 extern void menu_draw_border (_menu *menu);
 extern void menu_draw_background (_menu *menu, SDL_Rect *dest);
-extern inline void menu_draw_menuitem (_menuitem *m);
+extern void menu_draw_menuitem (_menuitem *m);
 extern void menu_del_menuitem (_menuitem *m);
 extern void menu_reload (_menu *menu);
-extern inline void menu_reload_menuitem (_menuitem *m);
+extern void menu_reload_menuitem (_menuitem *m);
 extern void menu_focus_next (_menu *menu);
 extern void menu_focus_prev (_menu *menu);
 extern void menu_focus_id (_menu *menu, int id);

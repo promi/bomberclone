@@ -1,4 +1,4 @@
-/* $Id: network.c,v 1.79 2007-01-12 22:42:31 stpohle Exp $ */
+/* $Id: network.c,v 1.80 2012/01/28 21:53:19 steffen Exp $ */
 /*
 	network routines.
 */
@@ -460,7 +460,6 @@ void
 net_transmit_gamedata ()
 {
     int done = 0,
-        keypressed = 0,
         x,
         y,                      // network upload status for one step
         p,
@@ -621,12 +620,10 @@ net_transmit_gamedata ()
         if (keys[SDLK_ESCAPE] && event.type == SDL_KEYDOWN) {
             done = 1;
             bman.p_nr = -1;
-            keypressed = 1;
             bman.state = GS_startup;
         }
 
-        if (event.type == SDL_KEYUP)
-            keypressed = 0;
+//        if (event.type == SDL_KEYUP)
     }
 
     timestamp = SDL_GetTicks (); // needed for time sync.
