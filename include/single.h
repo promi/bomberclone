@@ -1,6 +1,6 @@
 /* $Id: single.h,v 1.7 2015/07/10 21:59:37 steffen Exp $
  * single player */
- 
+
 // single.c
 extern void single_game_new ();
 extern int single_create_ai (int num_players);
@@ -14,7 +14,8 @@ extern int ai_checkpos (_player * pl, _point * pos);
 extern int ai_findnearbombs (_point pos);
 extern int ai_findbestbombdir (_point pos, int dir, int range);
 extern int ai_bombpoints (_point pos, int range);
-extern _airunaway ai_runawayfrom (_point p, int nearbomb, int range, signed char norecursive);
+extern _airunaway ai_runawayfrom (_point p, int nearbomb, int range,
+                                  signed char norecursive);
 extern int ai_checkfield (int x, int y);
 extern int ai_easyrunaway (_point p, int range);
 extern void ai_team_choosegfx ();

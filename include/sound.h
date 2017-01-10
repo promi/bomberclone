@@ -13,26 +13,28 @@
 #define Mix_Music void
 #endif
 
-enum _soundsample {
-	SND_dead = 0,
-	SND_explode,
-	SND_bombdrop,
-	
-	SND_max
+enum _soundsample
+{
+  SND_dead = 0,
+  SND_explode,
+  SND_bombdrop,
+
+  SND_max
 };
 
-struct __snd {
-	unsigned char inited;
+struct __snd
+{
+  unsigned char inited;
 
-	Mix_Chunk *sample[SND_max]; // henqvist
-	Mix_Music *music; // henqvist
+  Mix_Chunk *sample[SND_max]; // henqvist
+  Mix_Music *music; // henqvist
 
-    int audio_rate;
-    Uint16 audio_format;
-    int audio_channels;
-	int playmusic;
-	int playsound;
-	
+  int audio_rate;
+  Uint16 audio_format;
+  int audio_channels;
+  int playmusic;
+  int playsound;
+
 } typedef _snd;
 
 extern _snd snd;
